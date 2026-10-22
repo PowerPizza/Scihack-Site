@@ -1,0 +1,182 @@
+.manage_skill_main_body{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    gap: 5px;
+}
+
+.manage_skill_main_body .add_skill{
+    display: grid;
+    grid-template-columns: 1fr 1fr 50px;
+    grid-template-rows: auto 80px;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid cyan;
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.manage_skill_main_body .add_skill .entry{
+    width: 100%;
+    margin-top: 25px;
+}
+.manage_skill_main_body .add_skill .entry.skill_desc{
+    grid-row-start: 2;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    resize: none;
+    height: 90%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 2px solid white;
+    outline: none;
+    background-color: transparent;
+    border-radius: 4px;
+    padding: 3px;
+    transition: all 0.3s;
+    color: white;
+    font-size: 1.1rem;
+    &:focus{
+        border: 2px solid cyan;
+    }
+    &::placeholder{
+        color: rgb(207, 207, 207);
+    }
+    &::-webkit-scrollbar{
+        width: 3px;
+    }
+}
+
+.manage_skill_main_body .add_skill .add_btn{
+    margin-left: auto;
+    cursor: pointer;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column-start: 3;
+    grid-column-end: 3;
+}
+
+.manage_skill_main_body .skill_list{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 50vh;
+    border: 2px solid cyan;
+    border-radius: 5px;
+    padding: 5px;
+    gap: 5px;
+}
+.manage_skill_main_body .skill_list::-webkit-scrollbar{
+    width: 5px;
+}
+
+.manage_skill_main_body .skill_list .skill_box_element{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background-color: rgb(0, 15, 15);
+    height: 40px;
+    border-radius: 5px;
+    padding: 5px;
+}
+.manage_skill_main_body .skill_list .skill_box_element .skill_title{
+    font-family: "Roboto Slab", serif;
+    width: 100%;
+    font-size: 1.2rem;
+}
+.manage_skill_main_body .skill_list .skill_box_element .skill_title .percentage{
+    width: 100px;
+    border-radius: 20px;
+    color: white;
+    background-color: rgb(0, 78, 78);
+    padding: 0px 10px 0px 10px;
+    margin-right: 10px;
+}
+
+.manage_skill_main_body .edit_skill_prompt.disabled{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    user-select: none;
+}
+.manage_skill_main_body .edit_skill_prompt.content{
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    max-width: 350px;
+    background-color: rgb(0, 12, 12);
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px 1px rgba(0, 255, 255, 0.3);
+    height: fit-content;
+}
+.manage_skill_main_body .edit_skill_prompt.content .edit_skill_heading{
+    font-family: "Bokor", system-ui;
+    font-weight: 300;
+    line-height: 20px;
+    margin: 0;
+    margin-top: 10px;
+    font-size: 2rem;
+    text-align: center;
+    width: 100%;
+}
+.manage_skill_main_body .edit_skill_prompt.content .edit_skill_heading .close_btn{
+    margin-top: -10px;
+    float: right;
+    cursor: pointer;
+}
+.manage_skill_main_body .edit_skill_prompt.content .skill_id{
+    color: rgb(197, 197, 197);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: -12px;
+    user-select: text;
+}
+
+.manage_skill_main_body .edit_skill_prompt.content .edit_skill_entry{
+    z-index: 2;
+}
+.manage_skill_main_body .edit_skill_prompt.content .edit_skill_entry.skill_desc{
+    border: 2px solid white;
+    border-radius: 4px;
+    height: 150px;
+    background-color: transparent;
+    transition: all 0.3s;
+    outline: none;
+    color: white;
+    margin-top: 10px;
+    font-size: 1.1rem;
+    padding: 3px;
+    resize: none;
+    &:focus{
+        border: 2px solid cyan;
+    }
+    &::placeholder{
+        color: rgb(218, 218, 218);
+    }
+    &::-webkit-scrollbar{
+        width: 3px;
+    }
+}
+
+.manage_skill_main_body .edit_skill_prompt.content .edit_btn{
+    margin: auto;
+    padding: 8px;
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}

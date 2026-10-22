@@ -1,0 +1,42 @@
+.skillPage_main_body{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: auto;
+    gap: 10px;
+    user-select: none;
+    min-height: 100%;
+    max-height: fit-content;
+    align-items: center;
+}
+
+.skillPage_main_body .skills_heading .back{
+    font-size: 4rem;
+}
+
+.skillPage_main_body .sub_headings{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -5px;
+    font-size: 1.2rem;
+}
+.skillPage_main_body .sub_headings::after{
+    display: inline-block;
+    content: "";
+    animation: sub_heading_anim 12s infinite;
+}
+@keyframes sub_heading_anim {
+    0% {transform: rotateX(0deg); content: "Turning Skills into Solutions";}
+    20% {transform: rotateX(360deg); content: "The Code Behind the Magic";}
+    40% {transform: rotateX(0deg); content: "Where Creativity Meets Technology";}
+    60% {transform: rotateX(360deg); content: "Crafting Innovation Through Code";}
+    80% {transform: rotateX(0deg); content: "Skills That Speak Loudly";}
+    100% {transform: rotateX(360deg); content: "Turning Skills into Solutions";}
+}
+
+.skillPage_main_body .skill_holder{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 30px;
+    width: 100%;
+}

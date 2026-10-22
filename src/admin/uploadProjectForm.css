@@ -1,0 +1,287 @@
+.upload_project_body{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
+    width: 100%;
+    user-select: none;
+}
+
+.upload_project_body .portion1{
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 350px 3fr;
+    margin-top: 20px;
+}
+.upload_project_body .portion1 .thumbnail{
+    display: flex;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    margin: 20px;
+    border: 2px solid cyan;
+    aspect-ratio: 1/1;
+    margin-top: auto;
+    margin-bottom: auto;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    user-select: none;
+    cursor: pointer;
+    max-width: 300px;
+    &:hover{
+        box-shadow: 0px 0px 4px 0px cyan;
+    }
+}
+.upload_project_body .portion1 .title_entry{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.upload_project_body .portion1 .title_entry .title_input{
+    width: 100%;
+}
+.upload_project_body .portion1 .title_entry .category_select{
+    /* border: 2px solid white; */
+    outline: none;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+.upload_project_body .portion1 .desc_entry{
+    background-color: transparent;
+    border: 2px solid white;
+    outline: none;
+    color: white;
+    border-radius: 4px;
+    resize: none;
+    height: 200px;
+    font-size: 1.2rem;
+    padding: 4px;
+    font-family: "Roboto Slab", serif;
+    &:focus{
+        border-color: cyan;
+        color: cyan;
+        &::placeholder{
+            color: cyan;
+        }
+    }
+    &::placeholder{
+        color: white;
+    }
+}
+
+.upload_project_body .lbl_more_imgs, .upload_project_body .lbl_more_vdos, .upload_project_body .lbl_more_links{
+    font-family: "Roboto Slab", serif;
+    font-size: 1.3rem;
+    margin-top: 10px;
+    z-index: 2;
+    background-color: #000409;
+    width: fit-content;
+    margin-left: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.upload_project_body .more_images, .upload_project_body .more_videos{
+    display: flex;
+    overflow: auto;
+    border-top: 2px solid cyan;
+    margin-top: -17px;
+    padding: 5px;
+    position: relative;
+    &::-webkit-scrollbar{
+        height: 10px;
+    }
+}
+.upload_project_body .more_images .more_images_holder,
+.upload_project_body .more_videos .more_videos_holder{
+    display: flex;
+    gap: 7px;
+    width: 0;
+}
+.upload_project_body .more_images .more_images_holder .btn_add_images,
+.upload_project_body .more_videos .more_videos_holder .btn_add_videos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    aspect-ratio: 1/1;
+    border-radius: 7px;
+    background-color: rgb(8, 8, 6);
+    margin-top: 10px;
+    transition: all 0.2s;
+    &:hover{
+        box-shadow: 0px 0px 4px 0px rgb(87, 87, 87);
+        background-color: rgb(20, 20, 20);
+    }
+}
+.upload_project_body .more_images .more_images_holder .proj_img_view,
+.upload_project_body .more_videos .moire_vdeos_holder .proj_vdo_view{
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    max-width: 200px;
+    aspect-ratio: 1/1;
+    border-radius: 7px;
+    background-color: rgb(8, 8, 6);
+    margin-top: 10px;
+    transition: all 0.2s;
+    border: 2px solid gray;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.upload_project_body .more_videos .more_videos_holder .proj_vdo_view video{
+    width: 200px;
+    aspect-ratio: 1/1;
+}
+.upload_project_body .more_images .more_images_holder .proj_img_view .close_proj_img, 
+.upload_project_body .more_videos .more_videos_holder .proj_vdo_view .close_proj_vdo{
+    margin-top: -3px;
+    margin-left: -3px;
+    border-radius: 10px;
+    transition: all 0.2s;
+    cursor: pointer;
+    &:hover{
+        background-color: #000409;
+    }
+}
+
+.upload_project_body .add_links{
+    display: flex;
+    flex-direction: column;
+    border-top: 2px solid cyan;
+    margin-top: -17px;
+    margin-bottom: 30px;
+}
+.upload_project_body .add_links .add_link_btn{
+    background-color: #0d61fc;
+    border-radius: 3px;
+    font-size: 1.3rem;
+    font-family: "Roboto Slab", serif;
+    color: white;
+    transition: all 0.2s;
+    margin-top: 15px;
+    float: left;
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding: 5px 20px 5px 20px;
+    border: 0;
+    &:hover{
+        box-shadow: 0px 0px 2px 0px cyan;
+    }
+}
+.upload_project_body .link_list{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-top: 2px solid rgb(0, 48, 48);
+    padding: 5px;
+}
+.upload_project_body .link_list .link_view{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Roboto Slab", serif;
+    background-color: rgb(8, 8, 8);
+    border-radius: 5px;
+    &:hover{
+        background-color: rgb(15, 15, 15);
+    }
+}
+.upload_project_body .link_list .link_view .link_text{
+    font-size: 1.3rem;
+    border-right: 3px solid cyan;
+    padding-right: 5px;
+    margin-left: 5px;
+    word-break: break-all;
+    min-width: 100px;
+}
+.upload_project_body .link_list .link_view .link_url{
+    font-size: 1.3rem;
+    color: cyan;
+    word-break: break-all;
+}
+.upload_project_body .link_list .delete_link{
+    margin-left: auto;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.upload_project_body .upload_proj_btn{
+    font-size: 1.4rem;
+    border-radius: 30px;
+    font-family: "Roboto Slab", serif;
+    background-color: #0d61fc;
+    color: white;
+    border: 0;
+    transition: all 0.2s;
+    cursor: pointer;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    &:hover{
+        box-shadow: 0px 0px 3px 0px cyan;
+    }
+}
+
+.upload_project_body .uploading_status{
+    border: 2px solid cyan;
+    border-radius: 4px;
+    padding: 10px;
+}
+.upload_project_body .uploading_status .uploading_text{
+    font-size: 1.3rem;
+    font-family: "Roboto Slab", serif;
+    &::after{
+        content: "";
+        animation: uploading_text_anim 1s linear infinite;
+    }
+}
+@keyframes uploading_text_anim {
+    0% {content: ".";}
+    30% {content: "..";}
+    60% {content: "...";}
+    100% {content: "....";}
+}
+
+.upload_project_body .uploading_status{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: "Roboto Slab", serif;
+}
+.upload_project_body .uploading_status .uploading_media{
+    display: flex;
+    flex-direction: column;
+}
+.upload_project_body .uploading_status .uploading_media .uploading_media_h{
+    display: flex;
+    margin-left: 40px;
+    align-items: center;
+    gap: 10px;
+}
+.upload_project_body .uploading_status .uploading_media .uploading_media_h span::after{
+    content: "";
+    animation: uploading_text_anim 1s linear infinite;
+}
+.upload_project_body .uploading_status .uploading_media .remaining_uploads{
+    font-size: 1.3rem;
+    margin-left: 120px;
+}
+
+.upload_project_body .uploading_status .updating_db{
+    display: flex;
+    margin-left: 40px;
+    align-items: center;
+    gap: 10px;
+}
+.upload_project_body .uploading_status .updating_db span::after{
+    content: "";
+    animation: uploading_text_anim 1s linear infinite;
+}

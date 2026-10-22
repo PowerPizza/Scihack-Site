@@ -1,0 +1,20 @@
+.not_found_main_body {
+    text-align: center;
+    padding: 20px;
+    min-height: 100%;
+    max-height: fit-content;
+}
+
+.glitch {
+    font-size: 10rem;
+    font-weight: bold;
+    position: relative;
+    color: #fff;
+    animation: glitch 1s infinite;
+}
+
+.message {
+    font-size: 1.2rem;
+    margin: 20px 0;
+    color: #ccc;
+}

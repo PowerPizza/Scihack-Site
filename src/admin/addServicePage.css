@@ -1,0 +1,121 @@
+.add_service_main_body{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+}
+
+.add_service_main_body .field_1{
+    display: flex;
+    align-items: center;
+}
+.add_service_main_body .field_1 .svg_entry{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    aspect-ratio: 1/1;
+    border: 1px solid cyan;
+    margin: 20px;
+    padding: 5px;
+    border-radius: 4px;
+}
+.add_service_main_body .field_1 .entry.service_title{
+    width: 100%;
+}
+.add_service_main_body .field_1 .svg_entry .my_img{
+    filter: brightness(0) invert(1);
+    width: 120px;
+    height: 120px;
+}
+
+.add_service_main_body .service_desc{
+    font-size: 1.1rem;
+    font-family: "Roboto Slab", serif;
+    background-color: transparent;
+    color: white;
+    border: 2px solid cyan;
+    border-radius: 5px;
+    outline: none;
+    min-height: 100px;
+    max-height: 400px;
+    resize: vertical;
+    margin: 10px;
+    padding: 10px;
+    &:focus{
+        color: cyan;
+    }
+}
+
+.add_service_main_body .add_service_btn{
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.add_service_main_body .service_demos{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid cyan;
+}
+.add_service_main_body .service_demos .entry_demos{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 5px;
+    align-items: center;
+    column-gap: 10px;
+}
+.add_service_main_body .service_demos .entry_demos .demo_entry{
+    font-size: 0.95rem;
+    background-color: transparent;
+    outline: none;
+    border: 1px solid gray;
+    border-radius: 5px;
+    font-family: "Roboto Slab", serif;
+    padding: 5px;
+    color: white;
+    &:focus{
+        border: 1px solid rgb(20, 130, 255);
+        color: cyan;
+    }
+}
+.add_service_main_body .service_demos .entry_demos .btn_add_demo{
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    cursor: pointer;
+    color: #0099ff;
+}
+
+.add_service_main_body .service_demos .demo_link_holder{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 1.2rem;
+    font-family: "Roboto Slab", serif;
+    margin-top: 5px;
+    border-top: 2px solid gray;
+    padding-top: 5px;
+}
+.add_service_main_body .service_demos .demo_link_holder .demo_link_ele{
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    padding: 3px 10px 3px 10px;
+    background-color: rgb(12, 12, 12);
+    &:hover{
+        background-color: rgb(20, 20, 20);
+    }
+}
+.add_service_main_body .service_demos .demo_link_holder .demo_link_ele .remove_demo{
+    margin-left: auto;
+    cursor: pointer;
+}

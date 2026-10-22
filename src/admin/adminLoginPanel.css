@@ -1,0 +1,58 @@
+.admin_login_panel_body{
+    min-height: 100%;
+    max-height: fit-content;
+    position: relative;
+}
+
+.admin_login_panel_body .entry_container{
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+    max-width: 300px;
+    height: 400px;
+    border: 3px solid red;
+    margin: auto;
+    position: absolute;
+    inset: 0;
+    padding: 10px;
+    gap: 20px;
+    border-radius: 5px;
+}
+
+.admin_login_panel_body .entry_container .heading_admin_login{
+    color: red;
+    font-family: "Bokor", system-ui;
+    margin: 0;
+    font-weight: 300;
+    text-align: center;
+    height: 30px;
+}
+.admin_login_panel_body .entry_container .btn_login{
+    border: 3px solid red;
+    border-radius: 40px;
+    font-size: 1.4rem;
+    padding: 5px;
+    color: red;
+    background-color: transparent;
+    font-family: "Roboto Slab", serif;
+    cursor: pointer;
+    margin: auto;
+    width: 170px;
+    transition: all 0.2s;
+    &:hover{
+        background-color: red;
+        color: white;
+    }
+}
+.admin_login_panel_body .entry_container .btn_login.disabled{
+    cursor: auto;
+    background-color: red;
+    color: white;
+}
+
+.admin_login_panel_body .entry_container .admin_entry .underline_exp{
+    background-color: red;
+}
+.admin_login_panel_body .entry_container .admin_entry .input_:focus ~ .default_text, .admin_login_panel_body .entry_container .admin_entry .default_text.active{
+    color: red;
+}

@@ -1,0 +1,89 @@
+.user_login_main_body{
+    display: flex;
+    align-items: center;
+    min-height: 100%;
+    max-height: fit-content;
+    padding: 12px;
+    user-select: text;
+}
+
+.user_login_main_body .login_content{
+    display: flex;
+    margin: auto;
+    width: 80%;
+    height: 400px;
+    box-shadow: 0px 0px 8px 2px cyan;
+    background: linear-gradient(45deg, transparent 55%, cyan 55.5%, rgb(0, 121, 121) 0%, cyan 95%);
+}
+
+.user_login_main_body .login_content .portion1{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    overflow-y: auto;
+}
+.user_login_main_body .login_content .portion1::-webkit-scrollbar{
+    width: 3px;
+}
+.user_login_main_body .login_content .portion1::-webkit-scrollbar-track{
+    background-color: rgba(160, 160, 160, 0.156);
+}
+.user_login_main_body .login_content .portion1::-webkit-scrollbar-thumb{
+    background: none;
+    background-color: rgba(68, 68, 68, 0.4);
+}
+
+.user_login_main_body .login_content .portion1 .login_heading{
+    margin: 0;
+    color: white;
+    font-family: "Bokor", system-ui;
+    font-weight: 500;
+    font-size: 2.5rem;
+    line-height: 50px;
+}
+
+.user_login_main_body .login_content .portion1 .user_entry{
+    width: 100%;
+    z-index: 2;
+}
+.user_login_main_body .login_content .portion1 .login_btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    padding: 5px 20px 8px 20px;
+    margin-top: 30px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.user_login_main_body .login_content .portion2{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.user_login_main_body .login_content .portion2 h1{
+    text-align: right;
+    color: white;
+    margin-right: 20px;
+    margin-top: 30%;
+    font-size: 2rem;
+    font-family: "Bokor", system-ui;
+    font-weight: 500;
+    font-size: 2.5rem;
+    line-height: 40px;
+}
+.user_login_main_body .login_content .portion2 .sub_title{
+    color: white;
+    margin-left: auto;
+    margin-right: 20px;
+    margin-bottom: auto;
+    font-size: 1rem;
+    text-align: right;
+    font-family: "Roboto Slab", serif;
+}

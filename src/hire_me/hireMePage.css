@@ -1,0 +1,123 @@
+.hireme_page_body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.hire_me_content {
+    max-width: 800px;
+    margin: auto;
+    background: #050d0f;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 25px rgba(0, 247, 255, 0.05);
+    margin: 15px;
+}
+
+header {
+    display: flex;
+}
+header .pfp{
+    grid-row-start: 1;
+    grid-row-end: 3;
+    width: 150px;
+    aspect-ratio: 1/1;
+    margin: auto;
+    box-shadow: 0px 0px 5px 2px cyan;
+    border-radius: 3px;
+}
+header .other_info{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+header .other_info h1{
+    margin: 0;
+}
+header .other_info h1 {
+    font-size: 2.5rem;
+    color: cyan;
+    text-align: center;
+}
+header .other_info p {
+    font-size: 1.1rem;
+    text-align: center;
+    color: #bbbbbb;
+}
+
+section {
+    margin-top: 40px;
+}
+
+section h2 {
+    margin-bottom: 15px;
+    color: cyan;
+    font-family: "Bokor", system-ui;
+    font-weight: 300;
+    font-size: 2rem;
+}
+
+.skills ul {
+    list-style: none;
+}
+
+.skills li {
+    background: #2c2c2c;
+    color: #ddd;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+.skills li:hover {
+    background: #3a3a3a;
+}
+
+.entry_form {
+    display: flex;
+    flex-direction: column;
+}
+
+.entry_form input,
+.entry_form textarea {
+    background-color: #1e1e1e;
+    border: 1px solid #444;
+    color: #eee;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s, background 0.3s;
+}
+
+.entry_form input:focus,
+.entry_form textarea:focus {
+    outline: none;
+    border-color: #0077ff;
+    background-color: #262626;
+}
+
+.entry_form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.entry_form button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #0077ff;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: "Roboto Slab", serif;
+}
+
+.entry_form button:hover {
+    background-color: #005ecc;
+}

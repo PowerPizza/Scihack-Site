@@ -1,0 +1,27 @@
+.blog_page_body {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 10px;
+    user-select: none;
+    min-height: 100%;
+    max-height: fit-content;
+    align-items: center;
+}
+
+.blog_page_body .blog_heading_heading .front{
+    font-size: 2.7rem;
+}
+
+.blog_content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .blog_content {
+        grid-template-columns: auto;
+    }
+}

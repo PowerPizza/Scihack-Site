@@ -1,0 +1,114 @@
+.user_signup_main_body{
+    display: flex;
+    align-items: center;
+    min-height: 100%;
+    max-height: fit-content;
+    padding: 12px;
+    user-select: text;
+}
+
+.user_signup_main_body .signup_content{
+    display: flex;
+    margin: auto;
+    width: 80%;
+    height: 400px;
+    box-shadow: 0px 0px 8px 2px cyan;
+    background: linear-gradient(45deg, transparent 55%, cyan 55.5%, rgb(0, 121, 121) 0%, cyan 95%);
+    overflow-y: auto;
+}
+.user_signup_main_body .signup_content::-webkit-scrollbar{
+    width: 3px;
+}
+.user_signup_main_body .signup_content::-webkit-scrollbar-track{
+    background-color: rgba(160, 160, 160, 0.3);
+}
+.user_signup_main_body .signup_content::-webkit-scrollbar-thumb{
+    background: none;
+    background-color: rgb(110, 110, 110);
+}
+
+.user_signup_main_body .signup_content .portion1{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    /* overflow-y: auto; */
+}
+
+.user_signup_main_body .signup_content .portion1 .signup_heading{
+    color: white;
+    margin: 0;
+    margin-top: 20px;
+    font-family: "Bokor", system-ui;
+    font-weight: 500;
+    font-size: 2.6rem;
+    line-height: 50px;
+}
+.user_signup_main_body .signup_content .portion1 .user_entry{
+    width: 100%;
+    z-index: 2;
+}
+.user_signup_main_body .signup_content .portion1 .signup_btn{
+    font-size: 1.4rem;
+    padding: 5px 20px 8px 20px;
+    margin-top: 30px;
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.user_signup_main_body .signup_content .portion2{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: sticky;
+    inset: 0;
+}
+.user_signup_main_body .signup_content .portion2 h1{
+    text-align: right;
+    color: white;
+    margin-right: 20px;
+    margin-top: 20%;
+    font-size: 2rem;
+    font-family: "Bokor", system-ui;
+    font-weight: 500;
+    font-size: 2.5rem;
+    line-height: 50px;
+}
+.user_signup_main_body .signup_content .portion2 .sub_title{
+    color: white;
+    margin-left: auto;
+    margin-right: 20px;
+    margin-bottom: auto;
+    font-size: 1rem;
+    text-align: right;
+    font-family: "Roboto Slab", serif;
+}
+
+.user_signup_main_body .signup_content .portion1.step2 .msg_a1{
+    margin-top: 10px;
+    font-family: "Roboto Slab", serif;
+    color: rgb(190, 190, 190);
+}
+.user_signup_main_body .signup_content .portion1.step2 .code_entry{
+    margin-top: 25px;
+    z-index: 2;
+}
+.user_signup_main_body .signup_content .portion1.step2 .msg_a2{
+    margin-top: 25px;
+    font-family: "Roboto Slab", serif;
+    color: rgb(202, 202, 202);
+}
+.user_signup_main_body .signup_content .portion1.step2 .resend_verification{
+    font-weight: 600;
+    font-size: 1.2rem;
+    font-family: "Roboto Slab", serif;
+    color: white;
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -1,0 +1,31 @@
+.footer_main_body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 250px;
+    background-color: #000911;
+    margin-top: 20px;
+    box-shadow: 0px 0px 4px 0px cyan;
+    user-select: none;
+}
+.footer_main_body .social_medias{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 10px;
+    align-items: center;
+    align-content: center;
+    place-items: center;
+    width: 100%;
+}
+.footer_main_body .social_medias .icon_{
+    transition: all 0.2s;
+    &:hover{
+        filter: drop-shadow(0px 0px 3px cyan);
+    }
+}
+
+.footer_main_body .copyright_text{
+    font-size: 1.2rem;
+    padding: 5px;
+    text-align: center;
+}

@@ -1,0 +1,9 @@
+.loading_circle_main_body{
+    background-color: rgb(26, 26, 26);
+    border-radius: 100px;
+}
+
+.loading_circle_main_body img{
+    width: 100%;
+    aspect-ratio: 1/1;
+}

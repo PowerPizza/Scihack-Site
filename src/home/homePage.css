@@ -1,0 +1,87 @@
+.home_main_body{
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    margin: auto;
+    padding: 10px;
+    gap: 20px;
+    user-select: text;
+}
+
+.home_main_body .pfp_image{
+    background-image: url('../icons/pfps/pfp_A.jpeg');
+    width: 45%;
+    min-width: auto;
+    min-height: auto;
+    max-width: 350px;
+    max-height: 350px;
+    aspect-ratio: 1/1;
+    background-size: cover;
+    border-radius: 200px;
+    animation: anim_pfp 4s infinite;
+    margin-left: 10px;
+}
+@keyframes anim_pfp {
+    0% {box-shadow: 0px 0px 4px 0px cyan;}
+    50% {box-shadow: 0px 0px 32px 0px cyan;}
+    100% {box-shadow: 0px 0px 4px 0px cyan;}
+}
+
+.home_main_body .other_info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+    font-family: "Roboto Slab", serif;
+    color: white;
+    width: fit-content;
+    max-width: 900px;
+}
+.home_main_body .other_info .improgrammer::after{
+    content: "";
+    animation: text_anim_improg 6s steps(11) infinite;
+    border-right: 2px solid transparent;
+}
+@keyframes text_anim_improg {
+    0%   { content: ""; border-color: aqua; }
+    2.5%   { content: "p"; }
+    5%  { content: "pr"; }
+    7.5%  { content: "pro"; border-color: transparent; }
+    10%  { content: "prog"; }
+    12.5%  { content: "progr"; }
+    15%  { content: "progra"; border-color: aqua; }
+    17.5%  { content: "program"; }
+    20%  { content: "programm"; }
+    22.5%  { content: "programme"; border-color: transparent; }
+    25%  { content: "programmer"; }
+
+    27.5%, 55%, 35%, 70%, 42.5%, 85% { content: "programmer"; border-color: aqua;}
+    30%, 60%, 37.5%, 75%, 45%, 90%, 50%, 100% { content: "programmer"; border-color: transparent;}
+}
+.home_main_body .other_info .social_medias{
+    display: block;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+}
+.home_main_body .other_info .social_medias *{
+    margin: 7px;
+}
+
+.home_main_body .other_info .social_medias .icon_{
+    border: 3px solid aqua;
+    border-radius: 50px;
+    padding: 7px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    &:hover{
+        box-shadow: 0px 0px 4px 2px aqua;
+    }
+}
+.home_main_body .other_info .btn_aqua.hire_me{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.color_aqua{
+    color: aqua;
+}

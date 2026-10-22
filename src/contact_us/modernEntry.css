@@ -1,0 +1,47 @@
+.entry{
+    margin-top: 40px;
+    position: relative;
+}
+.entry .input_{
+    background-color: transparent;
+    border: 0;
+    outline: none;
+    color: white;
+    font-size: 1.2rem;
+    width: calc(100% - 10px);
+}
+.entry .underline{
+    height: 2px;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.entry .underline .underline_exp{
+    background-color: cyan;
+    transition: all 0.3s;
+    width: 0px;
+    height: 100%;
+}
+.entry .default_text, .default_text_up{
+    position: absolute;
+    margin-top: -27px;
+    transition: all 0.3s;
+    font-size: 1.2rem;
+    color: white;
+    z-index: -1;
+    margin-left: 1px;
+}
+.entry .input_:focus + .underline .underline_exp{
+    width: 100%;
+}
+
+.entry .input_:focus ~ .default_text, .entry .default_text.active{
+    margin-top: -50px;
+    font-size: 1rem;
+    color: cyan;
+}
+.entry .default_text.active{
+    color: white;
+}

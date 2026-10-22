@@ -1,0 +1,101 @@
+.about_me_main_body{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: auto;
+    gap: 10px;
+    user-select: none;
+    min-height: 100%;
+    max-height: fit-content;
+}
+
+.about_me_main_body .about_me_heading .back{
+    font-size: 3.6rem;
+}
+.about_me_main_body .about_me_heading .front{
+    font-size: 2.7rem;
+}
+
+.about_me_main_body .about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 8px;
+    column-gap: 8px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about_me_main_body .about-content .info-box-half,
+.about_me_main_body .about-content .info-box-full {
+    border: 2px solid cyan;
+    min-height: 200px;
+    background: rgb(0, 15, 26);
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    border-radius: 5px;
+    gap: 14px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-blend-mode: soft-light;
+}
+.about_me_main_body .about-content .info-box-half .info-heading,
+.about_me_main_body .about-content .info-box-full .info-heading {
+    margin: 0;
+    font-family: "Bokor", system-ui;
+    font-weight: 500;
+    letter-spacing: 0.05rem;
+    line-height: 20px;
+    margin-top: 8px;
+}
+.about_me_main_body .about-content .info-box-half .info-text,
+.about_me_main_body .about-content .info-box-full .info-text {
+    color: white;
+    font-family: "Roboto Slab", serif;
+    padding-left: 12px;
+}
+
+.about_me_main_body .about-content .info-box-full {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.info-heading.get-in-touch {
+    margin-top: auto !important;
+}
+.info-get-in-touch {
+    display: flex;
+    background-color: rgba(0, 255, 255, 0.1);
+    border: 2px solid cyan;
+    padding: 8px;
+    border-radius: 5px;
+    backdrop-filter: blur(5px);
+    gap: 8px;
+}
+.info-get-in-touch span {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    color: white;
+}
+
+@media screen and (max-width: 900px) {
+    .about_me_main_body .about-content {
+        width: 90%;
+    }
+}
+@media screen and (max-width: 550px) {
+    .about_me_main_body .about-content {
+        width: 95%;
+    }
+}
+@media screen and (max-width: 350px) {
+    .about_me_main_body .about-content {
+        display: flex;
+        flex-direction: column;
+    }
+    .info-get-in-touch {
+        flex-direction: column;
+    }
+}

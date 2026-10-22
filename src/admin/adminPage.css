@@ -1,0 +1,103 @@
+.admin_main_body{
+    display: flex;
+    min-height: 100%;
+    max-height: fit-content;
+}
+
+.admin_main_body .side_bar{
+    background-color: rgb(4, 48, 48);
+    min-width: 250px;
+}
+
+.admin_main_body .content{
+    /* display: grid;
+    grid-template-columns: repeat(5, 1fr); */
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    row-gap: 5px;
+    column-gap: 5px;
+}
+.admin_main_body .content > .sub_cont_heading:not(:first-child){
+    margin-top: 20px;
+}
+.admin_main_body .content .sub_cont_heading{
+    font-size: 1.5rem;
+    font-family: "Roboto Slab", serif;
+}
+.admin_main_body .content .sub_content{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-left: 15px;
+}
+
+.admin_main_body .content .project_btn{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0, 12, 16);
+    width: 180px;
+    height: 180px;
+    border: 2px ridge cyan;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+}
+.admin_main_body .content .project_btn span{
+    color: white;
+    font-family: "Roboto Slab", serif;
+    font-size: 1.4rem;
+}
+
+/* ----------------------- COMMON AMONG ALL OPTION's PAGES ----------------------- */
+.opt_page_header{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid cyan;
+}
+.opt_page_header .back_icon{
+    margin-left: 10px;
+    cursor: pointer;
+    transition: scale 0.2s;
+    &:hover{
+        scale: 1.02;
+    }
+}
+.opt_page_header h1{
+    text-align: center;
+    font-family: "Bokor", system-ui;
+    font-weight: 300;
+    margin: 0;
+    width: 100%;
+}
+
+.normal_btn_b{
+    font-family: "Roboto Slab", serif;
+    color: white;
+    background-color: rgb(0, 108, 231);
+    padding: 5px 10px 5px 10px;
+    border: 0;
+    border-radius: 5px;
+    transition: all 0.2s;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0px 0px 2px 1px rgb(23, 170, 255);
+    &:hover{
+        box-shadow: 0px 0px 3px 2px rgb(23, 170, 255);
+    }
+}
+.normal_btn_b.red{
+    background-color: #e35f53;
+    &:hover{
+        box-shadow: 0px 0px 3px 2px #e35f53;
+    }
+}
+.normal_btn_b.green{
+    background-color: #2ab99d;
+    &:hover{
+        box-shadow: 0px 0px 3px 2px #2ab99d;
+    }
+}

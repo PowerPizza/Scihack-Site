@@ -1,0 +1,291 @@
+.tiptap_editor_body {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgb(114, 114, 114);
+    border-radius: 3px;
+}
+
+.tiptap_editor_body .editor_menu {
+    display: flex;
+    gap: 5px;
+    border-bottom: 1px solid #00343b;
+    background-color: #00090d;
+    padding-bottom: 10px;
+    position: sticky;
+    top: 0px;
+    z-index: 5;
+    overflow-x: auto;
+}
+.tiptap_editor_body .editor_menu::-webkit-scrollbar{
+    height: 4px;
+}
+
+.tiptap_editor_body .editor_menu .saperator {
+    padding: 1px;
+    background-color: rgba(0, 116, 116, 0.7);
+    height: 30px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.tiptap_editor_body .editor_menu .options {
+    background-color: transparent;
+    border: 0;
+    border:  1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 40px;
+    &:hover {
+        background-color: #00343b41;
+    }
+}
+.tiptap_editor_body .editor_menu .options.active {
+    background-color: #041a1b;
+    border:  1px solid #00343b;
+}
+
+.tiptap_editor_body .editor_menu select.options {
+    color: cyan;
+    width: 25px;
+    height: 25px;
+}
+
+.tiptap_editor_body .editor_menu .options.font_size {
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    gap: 2px;
+    min-width: 120px;
+}
+.tiptap_editor_body .editor_menu .options.font_size img{
+    width: 30px;
+    aspect-ratio: 1/1;
+    border-radius: 4px;
+    margin: 1px;
+    &:hover{
+        background-color: rgb(0, 59, 59);
+    }
+}
+.tiptap_editor_body .editor_menu .options.font_size input {
+    background-color: transparent;
+    border: 1px solid gray;
+    outline: none;
+    color: white;
+    border-radius: 2px;
+}
+
+.tiptap_editor_body .editor_menu .options.text_fg,
+.tiptap_editor_body .editor_menu .options.text_bg {
+    position: relative;
+    overflow: hidden;
+}
+.tiptap_editor_body .editor_menu .options.text_fg input,
+.tiptap_editor_body .editor_menu .options.text_bg input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    opacity: 0;
+}
+
+.tiptap_editor_body .editor {
+    color: white;
+    padding: 20px;
+}
+.tiptap_editor_body .editor .tiptap  {
+    outline: none;
+}
+
+/* -------------------------- MOBILE RESPONSIVE DESING ----------------------- */
+@media screen and (max-width: 550px) {
+    .tiptap_editor_body .content {
+        padding: 5px;
+    }
+}
+
+/* ------------------- CUSTOM ELEMENTS ---------------------*/
+.custom_dropdown {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 8px;
+    &:hover {
+        background-color: #00343b41;
+    }
+}
+.custom_dropdown .custom_select {
+    display: flex;
+    flex-direction: column;
+    max-height: 150px;
+    overflow-y: auto;
+    opacity: 0;
+    height: 100%;
+    z-index: 2;
+    cursor: pointer;
+}
+.custom_dropdown .custom_select option:checked {
+    background-color: #181818;
+    color: white;
+}
+
+.custom_dropdown .visible_data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+/* --------------------------- MORE FONTS WINDOW -------------------- */
+.more_fonts_area {
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+.more_fonts_area .more_fonts_content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 20px;
+    background-color: rgb(0, 9, 9);
+    border-radius: 12px;
+    box-shadow: 0px 0px 2px 1px gray;
+    padding: 10px;
+}
+.more_fonts_area .more_fonts_content .more_font_header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 36, 36, 0.5);
+    margin-bottom: 5px;
+}
+.more_fonts_area .more_fonts_content .more_font_header .win_name {
+    color: cyan;
+    margin: 5px;
+}
+.more_fonts_area .more_fonts_content .more_font_header .close_win {
+    margin-left: auto;
+    transition: all 0.3s;
+    cursor: pointer;
+    &:hover{
+        color: red;
+    }
+}
+.more_fonts_area .more_fonts_content .page_controls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.more_fonts_area .more_fonts_content .page_controls .cur_page {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: auto;
+}
+.more_fonts_area .more_fonts_content .page_controls .page_right{
+    margin-left: auto;
+    cursor: pointer;
+}
+.more_fonts_area .more_fonts_content .page_controls .page_left{
+    margin-right: auto;
+    cursor: pointer;
+}
+
+.more_fonts_area .more_fonts_content .font_card_holder {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow: auto;
+    padding-top: 10px;
+}
+.more_fonts_area .more_fonts_content .font_card_holder .font_card {
+    display: flex;
+    align-items: center;
+    width: 200px;
+    height: 70px;
+    background-color: rgb(0, 26, 26);
+    color: white;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    border: 1px solid gray;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    transition: all 0.2s;
+    user-select: text;
+    cursor: pointer;
+    &:hover {
+        transform: translate(2px, -2px);
+        box-shadow: -2px 2px 2px 1px cyan;
+    }
+}
+
+/* ------------------------- LINK PROMPT ------------------------ */
+.lp_all_black {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+.lp_all_black .link_prompt {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    position: absolute;
+    inset: 0;
+    background-color: rgb(0, 19, 19);
+    padding: 5px;
+    min-width: 250px;
+    max-width: 300px;
+    box-shadow: 0px 0px 6px 0px rgba(128, 128, 128, 0.5);
+    border-radius: 5px;
+    height: fit-content;
+}
+.lp_all_black .link_prompt .link_entry {
+    z-index: 2;
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+.lp_all_black .link_prompt .opt_container {
+    display: flex;
+}
+.lp_all_black .link_prompt .opt_container .link_opt {
+    padding: 4px;
+}
+.lp_all_black .link_prompt .opt_container .link_opt:nth-child(2) {
+    margin-left: auto;
+}
+
+.backing_up_tag {
+    background-color: rgb(0, 58, 58);
+    color: lime;
+    border-radius: 10px;
+    position: absolute;
+    top: 100px;
+    right: 5%;
+    width: fit-content;
+    padding: 12px;
+    z-index: 12;
+    user-select: none;
+}
+.backing_up_tag span::after {
+    content: ".";
+    animation: anim_loading_draft 1s infinite linear;
+}
+@keyframes anim_loading_draft {
+    0% {content: ".";}
+    50% {content: "..";}
+    100% {content: "...";}
+}

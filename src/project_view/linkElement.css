@@ -1,0 +1,16 @@
+.link_ele{
+    display: flex;
+    border: 3px solid cyan;
+    min-width: 230px;
+    width: fit-content;
+    border-radius: 30px;
+    align-items: center;
+    padding-right: 15px;
+}
+.link_ele .link_clickable{
+    font-size: 1.4rem;
+    border-left: 3px solid cyan;
+    padding-left: 10px;
+    color: white;
+    margin-left: 10px;
+}

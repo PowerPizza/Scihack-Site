@@ -1,0 +1,119 @@
+.bday_wish_main_body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.35);
+    z-index: 10;
+    user-select: none;
+}
+
+.bday_wish_main_body .bday_content{
+    display: flex;
+    align-items: center;
+    background-color: rgb(0, 10, 10);
+    box-shadow: 0px 0px 12px 0px rgba(0, 255, 255, 0.2);
+    width: 80%;
+    height: 80%;
+    border: 3px solid transparent;
+    border-image: linear-gradient(45deg, red, green, cyan, lime, yellow, blue);
+    border-image-slice: 1;
+    animation: border_anim 1s infinite linear;
+    overflow: auto;
+    position: relative;
+    animation: bday_wish_apper 1s;
+}
+@keyframes bday_wish_apper {
+    0% {scale: 0.3};
+    90% {scale: 1.02};
+    100% {scale: 1};
+}
+.bday_wish_main_body .bday_content::-webkit-scrollbar{
+    width: 4px;
+}
+@keyframes border_anim {
+    0% {border-image: linear-gradient(0deg, red, green, cyan, lime, yellow, blue); border-image-slice: 1;}
+    18% {border-image: linear-gradient(30deg, red, green, cyan, lime, yellow, blue); border-image-slice: 1;}
+    36% {border-image: linear-gradient(60deg, red, green, cyan, lime, yellow, blue); border-image-slice: 1;}
+    54% {border-image: linear-gradient(90deg, red, green, cyan, lime, yellow, blue); border-image-slice: 1;}
+    72% {border-image: linear-gradient(120deg, red, green, cyan, lime, yellow, blue); border-image-slice: 1;}
+    90% {border-image: linear-gradient(150deg, red, green, cyan, lime, yellow, blue); border-image-slice: 1;}
+    100% {border-image: linear-gradient(180deg, red, green, cyan, lime, yellow, blue); border-image-slice: 1;}
+}
+
+.bday_wish_main_body .bday_content .close_btn{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: red;
+    opacity: 0.7;
+    transition: opacity 600ms;
+    cursor: pointer;
+    &:hover{
+        opacity: 1;
+    }
+}
+
+.bday_wish_main_body .bday_content .interactable{
+    display: flex;
+    flex-direction: column;
+    margin-right: auto;
+}
+.bday_wish_main_body .bday_content .interactable .wish{
+    font-size: 1.2rem;
+    font-family: "Roboto Slab", serif;
+    padding: 8px;
+    color: transparent;
+    background: linear-gradient(to left bottom, #fffdfe, #fcf6fd, #f3f1ff, #e4edff, #d0ebff, #c4edff, #b6eeff, #a9f0ff, #a5f4ff, #a3f8fe, #a1fbfc, #a1fff9);
+    background-clip: text;
+    white-space: pre-line;
+}
+.bday_wish_main_body .bday_content .interactable .gift_box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+    width: fit-content;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+.bday_wish_main_body .bday_content .interactable .gift_box img{
+    width: 100px;
+}
+.bday_wish_main_body .bday_content .interactable .gift_box img.gift-container{
+    height: 90px;
+}
+
+.bday_wish_main_body .bday_content .interactable .gift_box img.gift-cover{
+    position: absolute;
+    width: 120px;
+    animation: gift_cover_shake 400ms infinite;
+    /* animation: gift_open 2s forwards; */
+}
+@keyframes gift_cover_shake {
+    0% {transform: translateX(-2px);}
+    25% {transform: translateX(2px);}
+    50% {transform: translateX(-2px);}
+    100% {}
+}
+@keyframes gift_open {
+    0% {transform: translate(0px, 0px); rotate: 0deg;}
+    100% {transform: translate(75px, -60px); rotate: -140deg;}
+}
+.bday_wish_main_body .bday_content .interactable .gift_box .gift_item{
+    font-size: 2rem;
+    opacity: 0;
+    /* animation: show_gift_item 2s forwards; */
+}
+@keyframes show_gift_item {
+    0%, 40% {opacity: 0;}
+    100% {opacity: 1;}
+}
+.bday_wish_main_body .bday_content .cake{
+    width: 300px;
+}

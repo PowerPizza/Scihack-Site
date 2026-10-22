@@ -1,0 +1,33 @@
+.msg_box_main_body{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    bottom: 40px;
+    min-width: 270px;
+    max-width: 400px;
+    min-height: 60px;
+    max-height: 100px;
+    background-color: rgb(24, 24, 24);
+    border-radius: 4px;
+    padding: 10px;
+    overflow: auto;
+    z-index: 12;
+    animation: open_msgbox 0.4s;
+    &::-webkit-scrollbar{
+        width: 3px;
+    }
+}
+@keyframes open_msgbox {
+    0% {scale: 0.2;}
+    100% {scale: 1;}
+}
+
+.msg_box_main_body .message_text{
+    color: white;
+    font-family: "Roboto Slab", serif;
+    font-size: 1.2rem;
+    word-wrap: break-word;
+}

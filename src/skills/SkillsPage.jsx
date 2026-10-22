@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import './skillsPage.css'
 import SkillElement from './SkillElement'
 import LoadingCircle from '../loading_circle/LoadingCircle';
@@ -12,11 +12,11 @@ export default class SkillsPage extends Component {
     document.getElementsByClassName("content_and_footer")[0].scrollTo(0, 0);
     this.props.setLoadingBarProgress(30);
     this.setState({is_loading_skills: true});
-    let http_resp = await fetch("/get_skills", {method: "POST"});
+    let http_resp = await fetch("api/v1/skills", {method: "GET"});
     this.props.setLoadingBarProgress(60);
-    http_resp = JSON.parse(await http_resp.text());
+    http_resp = await http_resp.json();
     this.props.setLoadingBarProgress(100);
-    this.setState({skills_list: http_resp["skills"], is_loading_skills: false});
+    this.setState({skills_list: http_resp.skills, is_loading_skills: false});
   }
   
   render() {
@@ -35,9 +35,13 @@ export default class SkillsPage extends Component {
             <LoadingCircle width="45" height="45" /> 
           </div>
           :
-          this.state.skills_list.length ? 
-          this.state.skills_list.map((ele, idx_)=>{
-            return <SkillElement skill_name={ele[1]} percentage={ele[2]} skill_desc={ele[3]} key={`${idx_}_skill_element_cli`} />
+          this.state.skills_list?.length ? 
+          this.state.skills_list.map((skill_obj, idx_)=>{
+            return <SkillElement
+                      skill_name={skill_obj.title}
+                      percentage={skill_obj.percentage}
+                      skill_desc={skill_obj.description}
+                      key={`${idx_}_skill_element_cli`} />
           })
           :
           <span style={{marginLeft: "auto", marginRight: "auto", gridColumnStart: "1", gridColumnEnd: "3"}}>No skills are available yet!</span>

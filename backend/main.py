@@ -4,9 +4,11 @@ import time
 from  uuid import uuid4
 import bson.errors
 import requests
+import traceback
 from bson import ObjectId
-from flask import Flask, render_template, request, json, session
+from flask import Flask, render_template, request, json, session, g, jsonify, Blueprint
 from dotenv import load_dotenv
+from flask.sansio.scaffold import T_before_request
 from pymongo import MongoClient
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
@@ -23,8 +25,19 @@ from database.models.users_model import Users
 from database.models.skills_model import Skills
 from database.models.projects_model import Projects
 from database.models.project_assets_model import ProjectAssets
+from database.models.blogs_model import Blogs
+from database.models.post_interactions_model import PostInteractions
+from database.models.services_model import Services
 
 from database.database import setup_database, get_db
+from database.seed_data import seed_data
+
+from routes.skills_route import api as skills_api
+
+from database.dto.skill_response_dto import SkillResponseDto
+
+from sqlalchemy.orm import Session
+from sqlalchemy import select
 
 from enumerations.post_action import PostActions
 from enumerations.post_types import PostTypes
@@ -81,7 +94,30 @@ class WebSvr(Flask):
         self.setup_bday_wish_task()
 
         setup_database()
+        seed_data()
 
+        self.before_request(self._create_db_session)
+        self.teardown_request(self._close_db_session)
+
+        self.register_blueprint(skills_api)
+
+    def _create_db_session(self):
+        g.db = get_db()
+
+
+    def _close_db_session(self, exception=None):
+        db = g.pop("db", None)
+        if db is not None:
+            try:
+                if exception is not None:
+                    db.rollback()
+            finally:
+                try:
+                    db.close()
+                finally: pass
+
+    def _get_db(self) -> Session:
+        return g.db
 
     def setup_protected_endpoints(self):
         @self.route("/upload_to_drive", methods=["POST"])
@@ -361,16 +397,17 @@ class WebSvr(Flask):
             except BaseException as e:
                 return json.dumps({"status": "failed", "error": str(e)})
 
-        @self.route("/get_skills", methods=["POST"])
-        def get_skills():
-            try:
-                skills_coll = self.mongodb.get_collection(self.skills_collection_name)
-                all_skills = skills_coll.find().sort({"percentage": -1})
-                skills_to_send = [(str(doc_["_id"]), doc_["title"], doc_["percentage"], doc_.get("description")) for doc_ in all_skills]
-                to_ret = {"status": "success", "skills": skills_to_send}
-                return json.dumps(to_ret)
-            except BaseException as e:
-                return json.dumps({"status": "failed", "error": str(e)})
+        # @self.get("/get_skills")
+        # def get_skills():
+        #     db = self._get_db()
+        #     try:
+        #         statement = select(Skills).order_by(Skills.percentage)
+        #         skills = db.execute(statement).scalars().all()
+        #         skills_to_send = [SkillResponseDto.from_model(skill) for skill in skills]
+        #         to_ret = {"status": "success", "skills": skills_to_send}
+        #         return jsonify(to_ret)
+        #     except BaseException as e:
+        #         return jsonify({"status": "failed", "error": str(e)})
 
         @self.route("/get_blog_posts", methods=["GET"])
         def getBlogPosts():

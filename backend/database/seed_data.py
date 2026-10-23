@@ -14,5 +14,19 @@ def seed_skill_data():
     db.commit()
     db.close()
 
+def seed_users_data():
+    db = get_db()
+    query = text("""INSERT INTO users (id, username, gmail, password, dob, phone_no, role, with_google, 
+    created_at, updated_at) VALUES 
+    (1, 'Jack', 'jack@gmail.com', '123456789', '2002-08-21', '+91 9288182278', 'admin', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
+    (2, 'Michal', 'michal@gmail.com', '123456789', '1998-02-02', '+91 9288199392', 'user', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
+    (3, 'Donald', 'donald@gmail.com', '123456789', '2001-05-18', '+91 9288183728', 'user', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) 
+    ON CONFLICT DO NOTHING""")
+    db.execute(query)
+    db.flush()
+    db.commit()
+    db.close()
+
 def seed_data():
     seed_skill_data()
+    seed_users_data()

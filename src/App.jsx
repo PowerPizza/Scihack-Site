@@ -27,6 +27,7 @@ import BirthdayWish from './happy_bday/BirthdayWish';
 import LoadingBar from 'react-top-loading-bar';
 import BlogPage from './blog/BlogPage';
 import BlogPreviewPage from './blog/BlogPreviewPage';
+import apiClient from './api/api-client';
 
 export default class App extends Component {
   constructor() {
@@ -94,15 +95,15 @@ export default class App extends Component {
       this.setState({ device_width: window.innerWidth });
     }
 
-    let http_resp = await fetch("/login/get_creds", {method: "POST"})
-    http_resp = JSON.parse(await http_resp.text());
-    if (http_resp["status"] === "success"){
+    const response = await apiClient.getLoginCredentials();
+    if (response.status === "OK") {
       let today_ = new Date();
-      let bday = new Date(http_resp["dob"]);
+      let bday = new Date(response.dob);
       if (today_.getDate() === bday.getDate() && today_.getFullYear() === bday.getFullYear() && today_.getMonth() === bday.getMonth()){
         this.setState({is_bday: true});
       }
-      this.setState({is_logged_in: true, login_creds: http_resp});
+      delete response.status;
+      this.setState({is_logged_in: true, login_creds: response});
     }
   }
 

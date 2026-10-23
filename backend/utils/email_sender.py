@@ -4,7 +4,7 @@ from email.mime.text import MIMEText
 import os
 from dotenv import load_dotenv
 
-load_dotenv(".env")
+load_dotenv("../.env")
 
 def send_email_verification_code(to_, code_):
     html_msg = MIMEMultipart('alternative')

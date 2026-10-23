@@ -1,14 +1,10 @@
 import base64
-import os
-import time
 from  uuid import uuid4
 import bson.errors
 import requests
-import traceback
 from bson import ObjectId
-from flask import Flask, render_template, request, json, session, g, jsonify, Blueprint
-from dotenv import load_dotenv
-from flask.sansio.scaffold import T_before_request
+from flask import Flask, render_template, request, json, session, g
+from flask_jwt_extended import JWTManager
 from pymongo import MongoClient
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
@@ -16,31 +12,25 @@ from oauth2client.service_account import ServiceAccountCredentials
 from flask_apscheduler import APScheduler
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from email_sender import *
+from utils.email_sender import *
 from google.oauth2 import id_token
 from google.auth.transport import requests as grequests
 
 # Importing models is necessary for setup_database()
-from database.models.users_model import Users
-from database.models.skills_model import Skills
-from database.models.projects_model import Projects
-from database.models.project_assets_model import ProjectAssets
-from database.models.blogs_model import Blogs
-from database.models.post_interactions_model import PostInteractions
-from database.models.services_model import Services
 
 from database.database import setup_database, get_db
 from database.seed_data import seed_data
 
 from routes.skills_route import api as skills_api
-
-from database.dto.skill_response_dto import SkillResponseDto
+from routes.auth_route import api as auth_api
+from routes.mail_route import api as mail_api
 
 from sqlalchemy.orm import Session
-from sqlalchemy import select
 
 from enumerations.post_action import PostActions
 from enumerations.post_types import PostTypes
+
+from datetime import timedelta
 
 load_dotenv()
 
@@ -88,18 +78,28 @@ class WebSvr(Flask):
         super().__init__(__name__, template_folder="../dist", static_folder="../dist", static_url_path="/")
         self.secret_key = os.getenv("SECRET_KEY")
         self.config.from_mapping({"SCHEDULER_API_ENABLED": True})
+        self.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+        self.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=30)
+
+        self.jwt = JWTManager(self)
         self.gdrive = GoogleDriveDB()
         print("**Google Drive Connected !!!")
         self.setup_mongo_db_client()
         self.setup_bday_wish_task()
 
+        # Setup and seed database.
         setup_database()
         seed_data()
 
+        # Setup incoming and outgoing request interceptor
         self.before_request(self._create_db_session)
         self.teardown_request(self._close_db_session)
 
+        # setup routes to apis
         self.register_blueprint(skills_api)
+        self.register_blueprint(auth_api)
+        self.register_blueprint(mail_api)
+
 
     def _create_db_session(self):
         g.db = get_db()
@@ -350,33 +350,6 @@ class WebSvr(Flask):
             except BaseException as e:
                 return json.dumps({"status": "failed", "error": str(e)})
 
-        @self.route("/send_verification_code", methods=["POST"])
-        def send_verification_code():
-            try:
-                data_ = json.loads(request.data.decode())
-                send_email_verification_code(data_["gmail"], data_["code"])
-                return json.dumps({"status": "success"})
-            except BaseException as e:
-                return json.dumps({"status": "failed", "error": str(e)})
-
-        @self.route("/send_contact_application", methods=["POST"])
-        def send_contact_application():
-            try:
-                data_ = json.loads(request.data.decode())
-                send_contact_mail(data_["date"], data_["name"], data_["email"], data_["age"], data_["phone_no"], data_["message"])
-                return json.dumps({"status": "success"})
-            except BaseException as e:
-                return json.dumps({"status": "failed", "error": str(e)})
-
-        @self.route("/send_hire_application", methods=["POST"])
-        def send_hire_application():
-            try:
-                data_ = json.loads(request.data.decode())
-                send_hire_mail(data_["cli_name"], data_["cli_gmail"], data_["date_of_submission"], data_["project_info"])
-                return json.dumps({"status": "success"})
-            except BaseException as e:
-                return json.dumps({"status": "error", "error": str(e)})
-
         @self.route("/get_services", methods=["POST"])
         def send_services():
             data_ = json.loads(request.data.decode())
@@ -396,18 +369,6 @@ class WebSvr(Flask):
                 return json.dumps({"status": "success", "data": to_ret})
             except BaseException as e:
                 return json.dumps({"status": "failed", "error": str(e)})
-
-        # @self.get("/get_skills")
-        # def get_skills():
-        #     db = self._get_db()
-        #     try:
-        #         statement = select(Skills).order_by(Skills.percentage)
-        #         skills = db.execute(statement).scalars().all()
-        #         skills_to_send = [SkillResponseDto.from_model(skill) for skill in skills]
-        #         to_ret = {"status": "success", "skills": skills_to_send}
-        #         return jsonify(to_ret)
-        #     except BaseException as e:
-        #         return jsonify({"status": "failed", "error": str(e)})
 
         @self.route("/get_blog_posts", methods=["GET"])
         def getBlogPosts():
@@ -469,35 +430,17 @@ class WebSvr(Flask):
             else:
                 return "LOGIN_FAILED"
 
-        @self.route("/signup/add_account", methods=["POST"])
-        def onSignup():
-            data_ = json.loads(request.data.decode())
-            users_coll = self.mongodb.get_collection(self.users_collection_name)
-            if users_coll.find_one({"gmail": data_["gmail"]}) is not None:
-                return json.dumps({"status": "failed", "error": "Account already exists!"})
-            data_["with_google"] = False
-            users_coll.insert_one(data_)
-            session["user_creds"] = {"gmail": data_["gmail"], "password": data_["password"], "with_google": False}
-            return json.dumps({"status": "success"})
+        # @self.route("/signup/add_account", methods=["POST"])
+        # def onSignup():
+        #     data_ = json.loads(request.data.decode())
+        #     users_coll = self.mongodb.get_collection(self.users_collection_name)
+        #     if users_coll.find_one({"gmail": data_["gmail"]}) is not None:
+        #         return json.dumps({"status": "failed", "error": "Account already exists!"})
+        #     data_["with_google"] = False
+        #     users_coll.insert_one(data_)
+        #     session["user_creds"] = {"gmail": data_["gmail"], "password": data_["password"], "with_google": False}
+        #     return json.dumps({"status": "success"})
 
-        @self.route("/signup/account_exists", methods=["POST"])
-        def onAccountExists():
-            data_ = json.loads(request.data.decode())
-            users_coll = self.mongodb.get_collection(self.users_collection_name)
-            if users_coll.find_one({"gmail": data_["gmail"]}) is not None:
-                return json.dumps({"status": "success", "exists": True})
-            return json.dumps({"status": "success", "exists": False})
-
-        @self.route("/login/with_account", methods=["POST"])
-        def onLoginWithAccount():
-            data_ = json.loads(request.data.decode())
-            users_coll = self.mongodb.get_collection(self.users_collection_name)
-            from_db = users_coll.find_one({"gmail": data_["gmail"], "password": data_["password"], "with_google": False})
-            if from_db is None:
-                return json.dumps({"status": "failed", "error": "Invalid credentials or account doesn't exists."})
-            else:
-                session["user_creds"] = {"gmail": data_["gmail"], "password": data_["password"], "with_google": False}
-                return json.dumps({"status": "success"})
 
         @self.route("/login/get_status", methods=["POST"])
         def onGetLoginStatus():
@@ -505,20 +448,6 @@ class WebSvr(Flask):
                 return json.dumps({"status": "success", "is_login": True})
             else:
                 return json.dumps({"status": "success", "is_login": False})
-
-        @self.route("/login/get_creds", methods=["POST"])
-        def onGetLoginCreds():
-            try:
-                users_coll = self.mongodb.get_collection(self.users_collection_name)
-                session_creds = session["user_creds"]
-                if session_creds["with_google"]:
-                    from_db = users_coll.find_one({"gmail": session_creds["gmail"], "with_google": True},{"_id": False})
-                else:
-                    from_db = users_coll.find_one({"gmail": session_creds["gmail"], "password": session_creds["password"]}, {"_id": False})
-                assert from_db, "No login credentials found"
-                return json.dumps({"status": "success"} | from_db)
-            except BaseException as e:
-                return json.dumps({"status": "failed", "error": str(e)})
 
         @self.route("/logout", methods=["POST"])
         def onLogout():

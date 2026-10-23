@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import './userSignupPage.css'
 import ModernEntry from '../contact_us/ModernEntry';
 import { Link, Navigate } from 'react-router-dom';
 import LoadingCircle from '../loading_circle/LoadingCircle';
+import apiClient from '../api/api-client';
 
 export default class UserSignupPage extends Component {
   constructor() {
@@ -48,24 +49,22 @@ export default class UserSignupPage extends Component {
   sendVerificationCode = async (gmail)=>{
     this.setState({loader_: true});
 
-    let gmail_exists = await fetch("/signup/account_exists", {method: "POST", body: JSON.stringify({"gmail": gmail})});
-    gmail_exists = JSON.parse(await gmail_exists.text());
-    if (gmail_exists["status"] === "success" && gmail_exists["exists"] === true){
+    let gmail_exists = (await apiClient.checkGmailExists(gmail))?.exists ?? false;
+    if (gmail_exists){
       this.props.createMessageBox("An account with this Gmail already exists. Please log in or use a different Gmail to create a new account.", "error");
       this.setState({loader_: false});
-      throw new Error("Account already exists.");
+      throw new Error("Gmail already exists.");
     }
 
     this.verification_code_ = `${Math.floor(Math.random()*10e+7)}`.padStart(7);
-    let http_resp = await fetch("/send_verification_code", {method: "POST", body: JSON.stringify({"gmail": gmail, "code": this.verification_code_})});
-    http_resp = JSON.parse(await http_resp.text());
-    if (http_resp["status"] === "success"){
+    const response = await apiClient.sendVerificationCode(gmail, this.verification_code_);
+    if (response.status === "OK") {
       this.delay_time = 30;
       this.startTimer();
       this.props.createMessageBox("Verification code sent successfully.", "success");
     }
     else{
-      this.props.createMessageBox(`Failed to send verification code due to : ${http_resp["error"]}`, "error");
+      this.props.createMessageBox(`Failed to send verification code due to : ${response?.message}`, "error");
     }
     this.setState({loader_: false});
   }

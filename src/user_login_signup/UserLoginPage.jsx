@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import './userLoginPage.css'
 import ModernEntry from '../contact_us/ModernEntry';
 import { Link, Navigate } from 'react-router-dom';
 import LoadingCircle from '../loading_circle/LoadingCircle';
+import apiClient from '../api/api-client';
 
 export default class UserLoginPage extends Component {
   constructor(){
@@ -20,13 +21,14 @@ export default class UserLoginPage extends Component {
 
   onSubmitLogin = async ()=>{
     this.setState({is_logging: true});
-    let http_resp = await fetch("/login/with_account", {method: "POST", body: JSON.stringify({"gmail": this.state.gmail, "password": this.state.password})});
-    http_resp = JSON.parse(await http_resp.text());
-    if (http_resp["status"] === "success"){
+    
+    const response = await apiClient.login(this.state.gmail, this.state.password);
+    if (response.status === "OK") {
+      localStorage.setItem("token", response.token);
       window.location.href = "/";
     }
-    else{
-      this.props.createMessageBox(`Failed to login due to : ${http_resp["error"]}.`, "error");
+    else {
+      this.props.createMessageBox(`(${response.status}) Failed to login : ${response?.error}`, "error");
     }
     this.setState({is_logging: false});
   }

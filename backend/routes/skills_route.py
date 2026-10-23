@@ -13,7 +13,6 @@ def get_skills():
         statement = select(Skills).order_by(Skills.percentage)
         skills = db.execute(statement).scalars().all()
         skills_to_send = [SkillResponseDto.from_model(skill) for skill in skills]
-        to_ret = {"status": "success", "skills": skills_to_send}
-        return jsonify(to_ret)
+        return {"skills": skills_to_send}
     except BaseException as e:
-        return jsonify({"status": "failed", "error": str(e)})
+        return {"error": str(e)}, 500

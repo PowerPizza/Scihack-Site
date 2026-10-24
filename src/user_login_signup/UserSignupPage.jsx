@@ -71,11 +71,12 @@ export default class UserSignupPage extends Component {
 
   onSignupStep1 = () => {
     this.to_send = {
-      "user_name": this.state.user_name,
+      "username": this.state.user_name,
       "gmail": this.state.user_gmail,
       "password": this.state.password,
       "dob": this.state.dob,
-      "phone_no": this.state.phone_no
+      "phone_no": this.state.phone_no,
+      "with_google": false
     }
     if (Object.values(this.to_send).includes("") || Object.values(this.to_send).includes(null) || Object.values(this.to_send).includes(undefined)) {
       this.props.createMessageBox("Fields marked with * are required. Please make sure to fill them out correctly.", "error");
@@ -98,14 +99,14 @@ export default class UserSignupPage extends Component {
   onSignupStep2 = async ()=>{
     if (this.verification_code_ === this.state.verification_code){
       this.setState({loader_: true});
-      let http_resp = await fetch("/signup/add_account", {method: "POST", body: JSON.stringify(this.to_send)});
-      http_resp = JSON.parse(await http_resp.text());
-      if (http_resp["status"] === "success") {
+      let http_resp = await apiClient.signup(this.to_send);
+      if (http_resp.status === "OK") {
+        localStorage.setItem("token", http_resp.token);
         this.props.createMessageBox("Signed up successfully! Redirecting...", "success");
         setTimeout(()=>{window.location.href = "/"}, 2000);
       }
-      else if (http_resp["status"] === "failed") {
-        this.props.createMessageBox(http_resp["error"], "error");
+      else {
+        this.props.createMessageBox(`(${http_resp.status}) Failed to create account - ${http_resp.error}`, "error");
       }
     }
     else{

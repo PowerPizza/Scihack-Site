@@ -27,6 +27,11 @@ const apiClient = {
         let http_resp = await fetch(this.baseUrl+`/mail/verification_code`, {method: "POST", body: JSON.stringify({gmail, code}), headers: this.getCommonHeaders()});
         return {...(await http_resp.json()), status: http_resp.statusText}
     },
+
+    async signup(data) {
+        let http_resp = await fetch(this.baseUrl+"/auth/signup", {method: "POST", body: JSON.stringify(data), headers: this.getCommonHeaders()});
+        return {...(await http_resp.json()), status: http_resp.statusText}
+    },
 }
 
 export default apiClient;

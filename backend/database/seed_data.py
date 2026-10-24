@@ -3,12 +3,12 @@ from sqlalchemy import text
 
 def seed_skill_data():
     db = get_db()
-    query = text("""INSERT INTO skills (id, title, percentage, description, created_at, updated_at) VALUES
-     (1, 'HTML', 80, 'Test skill 1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
-     (2, 'CSS', 70, 'Test skill 2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
-     (3, 'JS', 50, 'Test skill 3', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
-     (4, 'React.js', 40, 'Test skill 4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
-     (5, 'Python', 50, 'Test skill 5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) ON CONFLICT (id) DO NOTHING""")
+    query = text("""INSERT INTO skills (title, percentage, description, created_at, updated_at) VALUES
+     ('HTML', 80, 'Test skill 1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
+     ('CSS', 70, 'Test skill 2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
+     ('JS', 50, 'Test skill 3', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
+     ('React.js', 40, 'Test skill 4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
+     ('Python', 50, 'Test skill 5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) ON CONFLICT (id) DO NOTHING""")
     db.execute(query)
     db.flush()
     db.commit()
@@ -16,11 +16,11 @@ def seed_skill_data():
 
 def seed_users_data():
     db = get_db()
-    query = text("""INSERT INTO users (id, username, gmail, password, dob, phone_no, role, with_google, 
+    query = text("""INSERT INTO users (username, gmail, password, dob, phone_no, role, with_google, 
     created_at, updated_at) VALUES 
-    (1, 'Jack', 'jack@gmail.com', '123456789', '2002-08-21', '+91 9288182278', 'admin', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
-    (2, 'Michal', 'michal@gmail.com', '123456789', '1998-02-02', '+91 9288199392', 'user', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
-    (3, 'Donald', 'donald@gmail.com', '123456789', '2001-05-18', '+91 9288183728', 'user', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) 
+    ('Jack', 'jack@gmail.com', '123456789', '2002-08-21', '+91 9288182278', 'ADMIN', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
+    ('Michal', 'michal@gmail.com', '123456789', '1998-02-02', '+91 9288199392', 'USER', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
+    ('Donald', 'donald@gmail.com', '123456789', '2001-05-18', '+91 9288183728', 'USER', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) 
     ON CONFLICT DO NOTHING""")
     db.execute(query)
     db.flush()

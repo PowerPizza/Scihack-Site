@@ -17,6 +17,13 @@ from google.oauth2 import id_token
 from google.auth.transport import requests as grequests
 
 # Importing models is necessary for setup_database()
+from database.models.blogs_model import Blogs
+from database.models.post_interactions_model import PostInteractions
+from database.models.projects_model import Projects
+from database.models.project_assets_model import ProjectAssets
+from database.models.services_model import Services
+from database.models.skills_model import Skills
+from database.models.users_model import Users
 
 from database.database import setup_database, get_db
 from database.seed_data import seed_data

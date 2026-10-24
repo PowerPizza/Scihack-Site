@@ -1,7 +1,7 @@
 from flask import Blueprint, g, jsonify, request
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from database.models.users_model import Users
+from database.models.users_model import Users, Role
 from typing import Optional
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from database.dto.user_response_dto import UserLiteResponse
@@ -65,7 +65,33 @@ def check_gmail_exists():
 
 @api.post("/auth/signup")
 def signup():
-    data_ = request.get_json(silent=True)
-    if not isinstance(data_, dict):
-        return {"error": "Invalid request body."}, 400
-    pass
+    db: Session = g.db
+    try:
+        data_ = request.get_json(silent=True)
+        if not isinstance(data_, dict):
+            return {"error": "Invalid request body."}, 400
+        else:
+            user = Users(
+                username=data_["username"],
+                gmail=data_["gmail"],
+                password=data_["password"],
+                dob=data_["dob"],
+                phone_no=data_["phone_no"],
+                role=Role.USER,
+                with_google=data_["with_google"]
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+
+            token = create_access_token(
+                identity=str(user.id),
+                additional_claims={
+                    "role": user.role.value
+                }
+            )
+            return {"token": token}, 200
+    except BaseException as e:
+        db.rollback()
+        print(e)
+        return {"error": str(e)}, 500

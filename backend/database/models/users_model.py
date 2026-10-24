@@ -1,6 +1,7 @@
 from database.database import Base
 from sqlalchemy import String, Date, Boolean, DateTime
 from sqlalchemy.orm import MappedColumn, mapped_column
+from sqlalchemy import Enum as SqlEnum
 from datetime import date, datetime, timezone
 from enum import Enum
 
@@ -19,7 +20,7 @@ class Users(Base):
     password: MappedColumn[str] = mapped_column(String(255))
     dob: MappedColumn[date] = mapped_column(Date())
     phone_no: MappedColumn[str] = mapped_column(String(20))
-    role: MappedColumn[Role] = mapped_column(String(50))
+    role: MappedColumn[Role] = mapped_column(SqlEnum(Role), nullable=False)
     with_google: MappedColumn[bool] = mapped_column(Boolean(), default=False)
     created_at: MappedColumn[date] = mapped_column(
         DateTime(timezone=True),

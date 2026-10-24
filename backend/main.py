@@ -31,6 +31,7 @@ from database.seed_data import seed_data
 from routes.skills_route import api as skills_api
 from routes.auth_route import api as auth_api
 from routes.mail_route import api as mail_api
+from routes.accounts_route import api as accounts_api
 
 from sqlalchemy.orm import Session
 
@@ -106,6 +107,7 @@ class WebSvr(Flask):
         self.register_blueprint(skills_api)
         self.register_blueprint(auth_api)
         self.register_blueprint(mail_api)
+        self.register_blueprint(accounts_api)
 
 
     def _create_db_session(self):
@@ -436,65 +438,6 @@ class WebSvr(Flask):
                 return "LOGIN_SUCCESS"
             else:
                 return "LOGIN_FAILED"
-
-        # @self.route("/signup/add_account", methods=["POST"])
-        # def onSignup():
-        #     data_ = json.loads(request.data.decode())
-        #     users_coll = self.mongodb.get_collection(self.users_collection_name)
-        #     if users_coll.find_one({"gmail": data_["gmail"]}) is not None:
-        #         return json.dumps({"status": "failed", "error": "Account already exists!"})
-        #     data_["with_google"] = False
-        #     users_coll.insert_one(data_)
-        #     session["user_creds"] = {"gmail": data_["gmail"], "password": data_["password"], "with_google": False}
-        #     return json.dumps({"status": "success"})
-
-
-        @self.route("/login/get_status", methods=["POST"])
-        def onGetLoginStatus():
-            if "user_creds" in session:
-                return json.dumps({"status": "success", "is_login": True})
-            else:
-                return json.dumps({"status": "success", "is_login": False})
-
-        @self.route("/logout", methods=["POST"])
-        def onLogout():
-            try:
-                del session["user_creds"]
-                return json.dumps({"status": "success"})
-            except BaseException as e:
-                return json.dumps({"status": "failed", "error": str(e)})
-
-        @self.route("/modify_account", methods=["POST"])
-        def onModifyAccount():
-            try:
-                data_ = json.loads(request.data.decode())
-                session_creds = session["user_creds"]
-                user_coll = self.mongodb.get_collection(self.users_collection_name)
-                if session_creds["with_google"]:
-                    user_coll.update_one({"gmail": session_creds["gmail"], "with_google": True}, {"$set": data_})
-                else:
-                    user_coll.update_one({"gmail": session_creds["gmail"], "password": session_creds["password"], "with_google": False}, {"$set": data_})
-                if "gmail" in data_:
-                    session["user_creds"] = session_creds | {"gmail": data_["gmail"]}
-                if "password" in data_:
-                    session["user_creds"] = session_creds | {"password": data_["password"]}
-                return json.dumps({"status": "success"})
-            except BaseException as e:
-                return json.dumps({"status": "failed", "error": str(e)})
-
-        @self.route("/delete_account", methods=["POST"])
-        def onDeleteAccount():
-            try:
-                user_coll = self.mongodb.get_collection(self.users_collection_name)
-                session_creds = session["user_creds"]
-                if session_creds["with_google"]:
-                    user_coll.delete_one({"gmail": session_creds["gmail"], "with_google": True})
-                else:
-                    user_coll.delete_one({"gmail": session_creds["gmail"], "password": session_creds["password"], "with_google": False})
-                onLogout()
-                return json.dumps({"status": "success"})
-            except BaseException as e:
-                return json.dumps({"status": "failed", "error": str(e)})
 
         @self.route("/login_with_google", methods=["POST"])
         def loginWithGoogle():

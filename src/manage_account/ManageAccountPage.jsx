@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import './manageAccountPage.css'
 import { Navigate } from 'react-router-dom';
 import { EditPencil, ProfileCircle } from 'iconoir-react';
 import LoadingCircle from '../loading_circle/LoadingCircle';
 import PromptYesNo from '../prompt_box/PromptYesNo';
+import apiClient from '../api/api-client';
 
 
 class GmailVerificationPrompt extends Component{
@@ -22,7 +23,6 @@ class GmailVerificationPrompt extends Component{
         let iv = setInterval(()=>{
             if (this.state.timer_ <= 0){
                 this.setState({timer_: 30, timer_running: false});
-                console.log("timer reset");
                 clearInterval(iv);
                 return;
             }
@@ -37,9 +37,8 @@ class GmailVerificationPrompt extends Component{
         }
         this.code = `${Math.floor(Math.random()*1000000)}`.padStart(7, 0);
         this.startTimer();
-        let http_resp = await fetch("/send_verification_code", {method: "POST", body: JSON.stringify({"gmail": this.props.gmail, "code": this.code})});
-        http_resp = JSON.parse(await http_resp.text());
-        if (http_resp["status"] === "success"){
+        let http_resp = await apiClient.sendVerificationCode(this.props.gmail, this.code);
+        if (http_resp.status === "OK"){
             this.props.createMessageBox("Code has been sent on your gmail.", "success");
         }
         else{
@@ -133,7 +132,7 @@ export default class ManageAccountPage extends Component {
     onSaveModifications = async ()=>{
         let to_send = {}
         if (this.state.username){
-            to_send["user_name"] = this.state.username;
+            to_send["username"] = this.state.username;
         }
         if (this.state.dob){
             to_send["dob"] = this.state.dob;
@@ -147,9 +146,8 @@ export default class ManageAccountPage extends Component {
         if (this.state.gmail && this.state.gmail !== this.state.user_data["gmail"]){
             const on_verify = async ()=>{
                 to_send["gmail"] = this.state.gmail;
-                let http_resp = await fetch("/modify_account", {method: 'POST', body: JSON.stringify(to_send)});
-                http_resp = JSON.parse(await http_resp.text());
-                if (http_resp["status"] === "success") {
+                let http_resp = await apiClient.updateAccount(to_send);
+                if (http_resp.status === "OK") {
                     this.props.createMessageBox("Account details has been modified.", "success");
                     this.setState({input_disabled: true});
                 }
@@ -159,32 +157,24 @@ export default class ManageAccountPage extends Component {
             return;
         }
         this.setState({is_loading: true});
-        let http_resp = await fetch("/modify_account", {method: 'POST', body: JSON.stringify(to_send)});
-        http_resp = JSON.parse(await http_resp.text());
-        if (http_resp["status"] === "success") {
+
+        let http_resp = await apiClient.updateAccount(to_send);
+        if (http_resp.status === "OK") {
             this.props.createMessageBox("Account details has been modified.", "success");
         }
         this.setState({is_loading: false, input_disabled: true});
     }
 
-    onLogout = async (eve)=>{
-        eve.target.innerText = "Please wait..."
-        let http_resp = await fetch("/logout", {method: "POST"});
-        http_resp = JSON.parse(await http_resp.text());
-        if (http_resp["status"] === "success"){
-            window.location.href = "/";
-        }
-        else{
-            this.props.createMessageBox(`Failed to logout due to : ${http_resp["error"]}`, "error");
-        }
-        eve.target.innerText = "Logout"
+    onLogout = async ()=>{
+        localStorage.removeItem("token");
+        window.location.href = "/";
     }
 
     onDeleteAccount = ()=>{
         const on_yes = async ()=>{
-            let http_resp = await fetch("/delete_account", {method: "POST"});
-            http_resp = JSON.parse(await http_resp.text());
-            if (http_resp["status"] === "success"){
+            let http_resp = await apiClient.deleteAccount();
+            if (http_resp.status === "OK"){
+                localStorage.removeItem("token");
                 this.props.createMessageBox("Your account has been deleted successfully.", "success");
                 setTimeout(()=>{window.location.href = "/"}, 1000);
             }
@@ -201,14 +191,13 @@ export default class ManageAccountPage extends Component {
 
     async componentDidMount(){
         this.props.setLoadingBarProgress(30);
-        let http_resp = await fetch("/login/get_creds", {method: 'POST'});
+        let http_resp = await apiClient.getCompleteAccountInfo();
         this.props.setLoadingBarProgress(60);
-        http_resp  = JSON.parse(await http_resp.text());
-        if (http_resp["status"] === "success"){
+        if (http_resp.status === "OK"){
             this.setState({user_data: http_resp});
         }
         else{
-            // create msg box
+            this.props.createMessageBox(`(${http_resp.status}) Failed to get account info: ${http_resp.error}`, "error");
         }
         this.props.setLoadingBarProgress(100);
     }
@@ -236,11 +225,11 @@ export default class ManageAccountPage extends Component {
         <div className='content' style={device_width < 650 ? {width: "100%"}: {}}>
             <div className='profile_icon'>
                 <ProfileCircle width={120} height={120} color='cyan' strokeWidth={1}/>
-                <span>Logged in as {this.state.user_data["user_name"]}</span>
+                <span>Logged in as {this.state.user_data["username"]}</span>
             </div>
             <div className='container info' style={device_width < 400 ? {display: "flex", flexDirection: "column", gap: "5px"}: {}}>
                 <span>Username</span>
-                <input type="text" onChange={this.onChangeUsername} defaultValue={this.state.user_data["user_name"]} disabled={this.state.input_disabled} />
+                <input type="text" onChange={this.onChangeUsername} defaultValue={this.state.user_data["username"]} disabled={this.state.input_disabled} />
                 <span>D.O.B</span>
                 <input type="date" onClick={(ele)=>{ele.target.showPicker()}} onChange={this.onChangeDob} defaultValue={this.state.user_data["dob"]} disabled={this.state.input_disabled} />
                 <span>Phone No.</span>

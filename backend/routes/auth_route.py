@@ -1,4 +1,4 @@
-from flask import Blueprint, g, jsonify, request
+from flask import Blueprint, g, request
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from database.models.users_model import Users, Role
@@ -38,7 +38,7 @@ def login():
             token = create_access_token(
                 identity=str(user.id),
                 additional_claims={
-                    "role": user.role
+                    "role": user.role.value
                 }
             )
             return {"token": token}, 200

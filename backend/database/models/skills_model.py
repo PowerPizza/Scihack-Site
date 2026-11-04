@@ -10,11 +10,11 @@ class Skills(Base):
     title: MappedColumn[str] = mapped_column(String(50))
     percentage: MappedColumn[int] = mapped_column(Integer, default=0)
     description: MappedColumn[str] = mapped_column(Text, nullable=True)
-    created_at: MappedColumn[date] = mapped_column(
+    created_at: MappedColumn[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc)
     )
-    updated_at: MappedColumn[date] = mapped_column(
+    updated_at: MappedColumn[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc)

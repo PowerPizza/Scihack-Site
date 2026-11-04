@@ -14,3 +14,12 @@ def xyz():
     pass
 ```
 then in main.py import the route and register blueprint in `__init__()`
+
+> To generate new migration using alembic
+```cmd
+alembic revision --autogenerate -m "Commit message"
+```
+then to apply latest migration use,
+```cmd
+alembic upgrade head
+```

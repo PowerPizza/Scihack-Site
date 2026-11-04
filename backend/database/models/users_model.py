@@ -22,11 +22,11 @@ class Users(Base):
     phone_no: MappedColumn[str] = mapped_column(String(20))
     role: MappedColumn[Role] = mapped_column(SqlEnum(Role), nullable=False)
     with_google: MappedColumn[bool] = mapped_column(Boolean(), default=False)
-    created_at: MappedColumn[date] = mapped_column(
+    created_at: MappedColumn[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda : datetime.now(timezone.utc)
     )
-    updated_at: MappedColumn[date] = mapped_column(
+    updated_at: MappedColumn[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda : datetime.now(timezone.utc),
         onupdate=lambda : datetime.now(timezone.utc)

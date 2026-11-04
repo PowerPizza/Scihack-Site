@@ -24,11 +24,11 @@ class PostInteractions(Base):
     action: MappedColumn[PostActions] = mapped_column(SqlEnum(PostActions), nullable=False)
     comment: MappedColumn[str] = mapped_column(Text, nullable=True)
     interacted_by: MappedColumn[Users] = mapped_column(ForeignKey("users.id"))
-    created_at: MappedColumn[date] = mapped_column(
+    created_at: MappedColumn[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
     )
-    updated_at: MappedColumn[date] = mapped_column(
+    updated_at: MappedColumn[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),

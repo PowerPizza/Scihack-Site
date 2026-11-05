@@ -2,6 +2,7 @@ import { Component } from 'react'
 import './skillsPage.css'
 import SkillElement from './SkillElement'
 import LoadingCircle from '../loading_circle/LoadingCircle';
+import apiClient from '../api/api-client';
 
 export default class SkillsPage extends Component {
   constructor(){
@@ -12,11 +13,10 @@ export default class SkillsPage extends Component {
     document.getElementsByClassName("content_and_footer")[0].scrollTo(0, 0);
     this.props.setLoadingBarProgress(30);
     this.setState({is_loading_skills: true});
-    let http_resp = await fetch("api/v1/skills", {method: "GET"});
+    const skills_resp = await apiClient.getSkills();
     this.props.setLoadingBarProgress(60);
-    http_resp = await http_resp.json();
     this.props.setLoadingBarProgress(100);
-    this.setState({skills_list: http_resp.skills, is_loading_skills: false});
+    this.setState({skills_list: skills_resp.skills, is_loading_skills: false});
   }
   
   render() {

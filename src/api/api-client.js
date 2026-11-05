@@ -47,6 +47,11 @@ const apiClient = {
         let http_resp = await fetch(this.baseUrl+"/account", {method: "DELETE", headers: this.getCommonHeaders()});
         return {...(await http_resp.json()), status: http_resp.statusText}
     },
+
+    async getSkills() {
+        let http_resp = await fetch(this.baseUrl+"/skills", {method: "GET", headers: this.getCommonHeaders()});
+        return {...(await http_resp.json()), status: http_resp.statusText}
+    },
 }
 
 export default apiClient;

@@ -1,6 +1,10 @@
 from .database import get_db
 from sqlalchemy import text
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 def seed_skill_data():
     db = get_db()
     query = text("""INSERT INTO skills (title, percentage, description, created_at, updated_at) VALUES
@@ -28,5 +32,19 @@ def seed_users_data():
     db.close()
 
 def seed_data():
-    seed_skill_data()
-    seed_users_data()
+    db = get_db()
+    query = text("SELECT id FROM users")
+    result_len = len(db.execute(query).scalars().fetchall())
+    logger.info(f"Found {result_len} users in database.")
+    if not result_len:
+        logger.info(f"Seeding dummy data for users.")
+        seed_users_data()
+
+    query = text("SELECT id FROM skills")
+    result_len = len(db.execute(query).scalars().fetchall())
+    logger.info(f"Found {result_len} skills in database.")
+    if not result_len:
+        logger.info(f"Seeding dummy data for skills.")
+        seed_skill_data()
+
+    db.close()

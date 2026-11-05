@@ -1,4 +1,5 @@
 import base64
+from logging import DEBUG
 from  uuid import uuid4
 import bson.errors
 import requests
@@ -21,6 +22,7 @@ from database.models.blogs_model import Blogs
 from database.models.post_interactions_model import PostInteractions
 from database.models.projects_model import Projects
 from database.models.project_assets_model import ProjectAssets
+from database.models.project_links_model import ProjectLinks
 from database.models.services_model import Services
 from database.models.skills_model import Skills
 from database.models.users_model import Users
@@ -32,6 +34,7 @@ from routes.skills_route import api as skills_api
 from routes.auth_route import api as auth_api
 from routes.mail_route import api as mail_api
 from routes.accounts_route import api as accounts_api
+from routes.projects_route import api as projects_api
 
 from sqlalchemy.orm import Session
 
@@ -40,7 +43,16 @@ from enumerations.post_types import PostTypes
 
 from datetime import timedelta
 
+import logging
+
 load_dotenv()
+
+# Configure logger
+logging.basicConfig(
+    level=DEBUG,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    filename="app.log"
+)
 
 class GoogleDriveDB(GoogleDrive):
     def __init__(self):
@@ -108,6 +120,7 @@ class WebSvr(Flask):
         self.register_blueprint(auth_api)
         self.register_blueprint(mail_api)
         self.register_blueprint(accounts_api)
+        self.register_blueprint(projects_api)
 
 
     def _create_db_session(self):

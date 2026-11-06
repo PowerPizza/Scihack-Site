@@ -52,6 +52,21 @@ const apiClient = {
         let http_resp = await fetch(this.baseUrl+"/skills", {method: "GET", headers: this.getCommonHeaders()});
         return {...(await http_resp.json()), status: http_resp.statusText}
     },
+
+    async getProjects() {
+        let http_resp = await fetch(this.baseUrl+"/projects", {method: "GET", headers: this.getCommonHeaders()});
+        return {...(await http_resp.json()), status: http_resp.statusText}
+    },
+
+    async getProjectCategories() {
+        let http_resp = await fetch(this.baseUrl+"/projects/categories", {method: "GET", headers: this.getCommonHeaders()});
+        return {...(await http_resp.json()), status: http_resp.statusText}
+    },
+
+    async getProjectById(project_id) {
+        let http_resp = await fetch(this.baseUrl+`/projects/${project_id}`, {method: "GET", headers: this.getCommonHeaders()});
+        return {...(await http_resp.json()), status: http_resp.statusText}
+    },
 }
 
 export default apiClient;

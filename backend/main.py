@@ -337,41 +337,6 @@ class WebSvr(Flask):
                 return json.dumps({"status": "error", "error": str(e)})
 
     def setup_public_endpoints(self):
-        @self.route("/get_project_categories", methods=["POST"])
-        def get_project_categories():
-            project_coll = self.mongodb.get_collection(self.project_collection_name)
-            categories = project_coll.distinct("category")
-            return json.dumps({"categories": categories})
-
-        @self.route("/get_projects", methods=["POST"])
-        def get_projects():
-            data_ = json.loads(request.data.decode())
-            project_coll = self.mongodb.get_collection(self.project_collection_name)
-            to_ret = []
-            to_exclude = {}
-            if "exclude" in data_:
-                to_exclude = {item: False for item in data_["exclude"]}
-
-            for item in project_coll.find({}, to_exclude).skip(data_["start"]).limit(data_["end"]):
-                item["_id"] = str(item["_id"])
-                to_ret.append(item)
-            return json.dumps({"projects": to_ret})
-
-        @self.route("/get_project_by_id", methods=["POST"])
-        def get_project_by_id():
-            try:
-                data_ = json.loads(request.data.decode())
-                project_coll = self.mongodb.get_collection(self.project_collection_name)
-                to_ret = project_coll.find_one({"_id": bson.ObjectId(data_["id"])})
-                if to_ret is None:
-                    return json.dumps({"status": "failed", "error": "This project no longer exists, maybe deleted by admin. Reload the page for updates."})
-                to_ret["_id"] = str(to_ret["_id"])
-                return json.dumps({"status": "success", "project": to_ret})
-            except bson.errors.InvalidId as no_id_found:
-                return json.dumps({"status": "failed", "error": str(no_id_found)})
-            except BaseException as e:
-                return json.dumps({"status": "failed", "error": str(e)})
-
         @self.route("/get_services", methods=["POST"])
         def send_services():
             data_ = json.loads(request.data.decode())

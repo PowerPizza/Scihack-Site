@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import './projectCard.css'
 import { MediaImageXmark, ThumbsDown, ThumbsUp } from 'iconoir-react'
 import { Link } from 'react-router-dom'

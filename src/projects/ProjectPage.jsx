@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import './projectPage.css'
 import ProjectCard from './ProjectCard'
-import LoadingCircle from '../loading_circle/LoadingCircle';
+import apiClient from '../api/api-client';
 
 export default class ProjectPage extends Component {
   constructor() {
@@ -9,10 +9,11 @@ export default class ProjectPage extends Component {
     this.state = { fetch_amount: 10, existing_categories: [] }
   }
 
-  get_existing_categories = async () => {
-    let http_resp = await fetch("/get_project_categories", { method: "POST" });
-    http_resp = JSON.parse(await http_resp.text());
-    this.setState({ existing_categories: http_resp["categories"] });
+  load_project_categories = async () => {
+    const resp = await apiClient.getProjectCategories();
+    if (resp.status === 'OK') {
+      this.setState({ existing_categories: resp.categories });
+    }
   }
 
   componentDidMount = async () => {
@@ -23,22 +24,32 @@ export default class ProjectPage extends Component {
       this.props.setLoadingBarProgress(100);
       return;
     }
-    await this.get_existing_categories();
 
-    let http_resp = await fetch("/get_projects", { method: "POST", body: JSON.stringify({ "start": 0, "end": this.state.fetch_amount, exclude: ["images", "videos", "links"] }) });
+    await this.load_project_categories();
+
+    const project_resp = await apiClient.getProjects();
     this.props.setLoadingBarProgress(60);
-    http_resp = JSON.parse(await http_resp.text());
+    if (project_resp.status !== 'OK') {
+      // Handle here..
+    }
 
     let project_cards = {"starred": []};
-    http_resp["projects"].forEach((itm, idx) => {
-      let renderable = <ProjectCard p_thumbnail={itm["thumbnail_id"]} p_title={itm["title"]} p_desc={itm["desc"]} project_id={itm["_id"]} p_likes={itm["likes"]} p_dislikes={itm["dislikes"]} key={`${idx}_project_card_ele`} />
-      if (itm["stared"]){
-        project_cards["starred"].push(renderable);
+    project_resp.projects.forEach((project, idx) => {
+      let renderable = <ProjectCard
+                          p_thumbnail={project?.thumbnail_id}
+                          p_title={project?.title}
+                          p_desc={project?.description}
+                          project_id={project?.id}
+                          p_likes={project?.likes}
+                          p_dislikes={project?.dislikes}
+                          key={`${idx}_project_card_ele`} />
+      if (project?.stared){
+        project_cards.starred.push(renderable);
       }
-      if (!(project_cards[itm["category"]] ?? false)){
-        project_cards[itm["category"]] = [];
+      if (!(project_cards[project?.category] ?? false)){
+        project_cards[project?.category] = [];
       }
-      project_cards[itm["category"]].push(renderable);
+      project_cards[project?.category].push(renderable);
     });
 
     this.props.saveLoadedProjects(project_cards);

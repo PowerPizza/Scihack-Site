@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import './projectView.css'
 import { ArrowLeft, ArrowRight, FastArrowLeft, PageLeft } from 'iconoir-react'
 import LinkElement from './LinkElement'
 import { Link, Navigate } from 'react-router-dom'
 import LoadingCircle from '../loading_circle/LoadingCircle'
+import apiClient from '../api/api-client'
 
 export default class ProjectView extends Component {
   constructor() {
@@ -50,16 +51,18 @@ export default class ProjectView extends Component {
   componentDidMount = async ()=>{
     document.getElementsByClassName("content_and_footer")[0].scrollTo(0, 0);
     
-    let document_id = (new URLSearchParams(window.location.search)).get("pid");
-    if (document_id){
-      let http_resp = await fetch("/get_project_by_id", {method: "POST", body: JSON.stringify({"id": document_id})});
-      http_resp = JSON.parse(await http_resp.text());
-      if (http_resp["status"] === "success"){
-        this.setState({project_metadata: http_resp["project"]});
+    let project_id = (new URLSearchParams(window.location.search)).get("pid");
+    if (project_id){
+      const project = await apiClient.getProjectById(project_id);
+      project.images = project.assets.filter(asset => asset.asset_type === 'image').map(asset => asset.url);
+      project.videos = project.assets.filter(asset => asset.asset_type === 'video').map(asset => asset.url);
+      if (project.status === "OK"){
+        delete project.status;
+        this.setState({project_metadata: project});
       }
       else{
-        this.props.createMessageBox(http_resp["error"], "error")
-        this.setState({project_metadata: -1});
+        this.props.createMessageBox(project.error, "error")
+        this.setState({project_metadata: null});
       }
     }
   }
@@ -91,7 +94,7 @@ export default class ProjectView extends Component {
 
     let video_holder_ele = (
       <div className='video_holder'>
-        {this.state.project_metadata["videos"].length ? 
+        {this.state.project_metadata?.videos ? 
         <>
           <iframe className="video_ele" src={`https://drive.google.com/file/d/${this.state.project_metadata["videos"][this.state.cur_vdo_idx]}/preview?usp=drivesdk`} frameborder="0" title='video_view'></iframe>
           <ArrowLeft width={40} height={40} className='arrow left' style={{ marginRight: "auto" }} onClick={this.onVideoPrev} />
@@ -121,7 +124,7 @@ export default class ProjectView extends Component {
         </div>
         <div className='content1'>
           <div className='image_holder'>
-            {this.state.project_metadata["images"].length ? 
+            {this.state.project_metadata?.images ? 
             <>
               <iframe className="image_ele" src={`https://drive.google.com/file/d/${this.state.project_metadata["images"][this.state.cur_img_idx]}/preview?usp=drivesdk`} frameborder="0" title='image_view'></iframe>
               <div className='control_arrows'>
@@ -140,7 +143,7 @@ export default class ProjectView extends Component {
         <div className='desc_holder'>
           <label htmlFor="desc" className='desc_lbl'>Description</label>
           <span name='desc' className='desc_cont'>
-            {this.state.project_metadata["desc"]}
+            {this.state.project_metadata?.description}
           </span>
         </div>
         <div className='content1'>
@@ -149,8 +152,8 @@ export default class ProjectView extends Component {
         <div className='link_holder'>
           <label htmlFor="links" className='link_lbl'>Links</label>
           {
-            this.state.project_metadata["links"].map((values) => {
-              return <LinkElement link_href={values["link"]} link_text={values["text"]} key={Math.random() * 10000} />
+            this.state.project_metadata.links.map((link_obj, idx) => {
+              return <LinkElement link_href={link_obj.link} link_text={link_obj.link_text} key={link_obj?.id+idx} />
             })
           }
         </div>

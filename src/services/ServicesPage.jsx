@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import './servicesPage.css'
 import { XmarkCircle } from 'iconoir-react';
 import { Link } from 'react-router-dom';
 import LoadingCircle from '../loading_circle/LoadingCircle';
+import apiClient from '../api/api-client';
 
 class DetailedServiceWin extends Component {
     render() {
@@ -12,7 +13,7 @@ class DetailedServiceWin extends Component {
                 <div className='detailed_service_content' style={device_width < 500 ? { width: "auto", height: "auto" } : {}}>
                     <div style={{ display: 'flex' }}>
                         {service_info ?
-                            <h1 className='service_heading'>Service - {service_info["service_title"]}</h1>
+                            <h1 className='service_heading'>Service - {service_info.title}</h1>
                             :
                             null
                         }
@@ -27,11 +28,11 @@ class DetailedServiceWin extends Component {
                             <br/>
                             <div className='desc_box'>
                                 <span className='desc lbl'>Description</span>
-                                <span className='desc_text'>{service_info["service_desc"]}</span>
+                                <span className='desc_text'>{service_info.description}</span>
                             </div>
                             <div className='demo_content'>
                                 <span className='demo lbl'>Demo projects based on this service</span>
-                                {service_info["demo_links"].map((ele_, idx_) => {
+                                {service_info.demo_links?.map((ele_, idx_) => {
                                     return (
                                         <button className='demo_btn' key={`${idx_}_demo_link_clickable`}>
                                             <a href={ele_["addr"]} rel='noreferrer' target='_blank' style={{color: "cyan"}}>Demo {idx_+1} | {ele_["text"]}</a>
@@ -76,16 +77,10 @@ export default class ServicesPage extends Component {
     }
 
     onClickService = async (_id) => {
-        this.setState({ showDetailedWindow: true })
-        let http_resp = await fetch("/get_service_by_id", { method: "POST", body: JSON.stringify({ "_id": _id }) });
-        http_resp = JSON.parse(await http_resp.text());
-        if (http_resp["status"] === "success") {
-            this.setState({ detailed_service: http_resp["data"] });
-        }
-        else {
-            this.props.createMessageBox(`Failed to load service details.\nError : ${http_resp["error"]}`, "error");
-            this.onCloseDetailOfService();
-        }
+        this.setState({
+            showDetailedWindow: true,
+            detailed_service: this.state.services_list.find(svc => svc.id == _id)
+        });
     }
 
     onCloseDetailOfService = () => {
@@ -95,10 +90,9 @@ export default class ServicesPage extends Component {
     async componentDidMount() {
         document.getElementsByClassName("content_and_footer")[0].scrollTo(0, 0);
         this.props.setLoadingBarProgress(30);
-        let http_resp = await fetch("/get_services", { method: "POST", body: JSON.stringify({ "exclude": ["service_desc", "demo_links"] }) });
+        const services = await apiClient.getServices();
         this.props.setLoadingBarProgress(60);
-        http_resp = JSON.parse(await http_resp.text());
-        this.setState({ services_list: http_resp["services"], is_fetching: false });
+        this.setState({ services_list: services.services, is_fetching: false });
         this.props.setLoadingBarProgress(100);
     }
 
@@ -125,15 +119,14 @@ export default class ServicesPage extends Component {
                             :
                             <span style={{ fontSize: "1.2rem" }}>No services are available yet.</span>
                         :
-                        this.state.services_list.map((srvc, idx_) => {
-                            return <ServiceElement service_icon={srvc["service_icon"]} service_text={srvc["service_title"]} onClick={() => { this.onClickService(srvc["_id"]) }} key={`${idx_}_service_ele`} />
+                        this.state.services_list.map((service, idx_) => {
+                            return (<ServiceElement
+                                        service_icon={service.icon}
+                                        service_text={service.title}
+                                        onClick={() => { this.onClickService(service.id) }}
+                                        key={`${idx_+service.id}_service_ele`} />)
                         })
                     }
-                    {/* <ServiceElement service_icon={<Code width={120} height={120} color='white' />} service_text="Web Developer" />
-                    <ServiceElement service_icon={<Tools width={120} height={120} color='white' />} service_text="Custom Software Developer" />
-                    <ServiceElement service_icon={<ReportColumns width={120} height={120} color='white' />} service_text="Static Portfolio Site" />
-                    <ServiceElement service_icon={<JournalPage width={120} height={120} color='white' />} service_text="Landing Page" />
-                    <ServiceElement service_icon={<PageFlip width={120} height={120} color='white' />} service_text="Bash Scripts" /> */}
                 </div>
 
                 {!this.state.services_list.length ? null :

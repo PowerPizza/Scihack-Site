@@ -35,6 +35,8 @@ from routes.auth_route import api as auth_api
 from routes.mail_route import api as mail_api
 from routes.accounts_route import api as accounts_api
 from routes.projects_route import api as projects_api
+from routes.services_route import api as services_api
+from routes.blogs_route import api as blogs_api
 
 from sqlalchemy.orm import Session
 
@@ -121,6 +123,8 @@ class WebSvr(Flask):
         self.register_blueprint(mail_api)
         self.register_blueprint(accounts_api)
         self.register_blueprint(projects_api)
+        self.register_blueprint(services_api)
+        self.register_blueprint(blogs_api)
 
 
     def _create_db_session(self):
@@ -337,15 +341,15 @@ class WebSvr(Flask):
                 return json.dumps({"status": "error", "error": str(e)})
 
     def setup_public_endpoints(self):
-        @self.route("/get_services", methods=["POST"])
-        def send_services():
-            data_ = json.loads(request.data.decode())
-            services_coll = self.mongodb.get_collection(self.services_collection_name)
-            to_ret = []
-            for item in services_coll.find({}, {ex: 0 for ex in data_["exclude"]}):
-                item["_id"] = str(item["_id"])
-                to_ret.append(item)
-            return json.dumps({"services": to_ret})
+        # @self.route("/get_services", methods=["POST"])
+        # def send_services():
+        #     data_ = json.loads(request.data.decode())
+        #     services_coll = self.mongodb.get_collection(self.services_collection_name)
+        #     to_ret = []
+        #     for item in services_coll.find({}, {ex: 0 for ex in data_["exclude"]}):
+        #         item["_id"] = str(item["_id"])
+        #         to_ret.append(item)
+        #     return json.dumps({"services": to_ret})
 
         @self.route("/get_service_by_id", methods=["POST"])
         def get_service_by_id():

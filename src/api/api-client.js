@@ -67,6 +67,16 @@ const apiClient = {
         let http_resp = await fetch(this.baseUrl+`/projects/${project_id}`, {method: "GET", headers: this.getCommonHeaders()});
         return {...(await http_resp.json()), status: http_resp.statusText}
     },
+
+    async getServices() {
+        let http_resp = await fetch(this.baseUrl+"/services", {method: "GET", headers: this.getCommonHeaders()});
+        return {...(await http_resp.json()), status: http_resp.statusText}
+    },
+
+    async getServiceById(service_id) {
+        let http_resp = await fetch(this.baseUrl+`/services/${service_id}`, {method: "GET", headers: this.getCommonHeaders()});
+        return {...(await http_resp.json()), status: http_resp.statusText}
+    },
 }
 
 export default apiClient;

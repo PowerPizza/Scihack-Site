@@ -340,68 +340,6 @@ class WebSvr(Flask):
             except BaseException as e:
                 return json.dumps({"status": "error", "error": str(e)})
 
-    def setup_public_endpoints(self):
-        # @self.route("/get_services", methods=["POST"])
-        # def send_services():
-        #     data_ = json.loads(request.data.decode())
-        #     services_coll = self.mongodb.get_collection(self.services_collection_name)
-        #     to_ret = []
-        #     for item in services_coll.find({}, {ex: 0 for ex in data_["exclude"]}):
-        #         item["_id"] = str(item["_id"])
-        #         to_ret.append(item)
-        #     return json.dumps({"services": to_ret})
-
-        # @self.route("/get_service_by_id", methods=["POST"])
-        # def get_service_by_id():
-        #     try:
-        #         data_ = json.loads(request.data.decode())
-        #         services_coll = self.mongodb.get_collection(self.services_collection_name)
-        #         to_ret = services_coll.find_one({"_id": bson.ObjectId(data_["_id"])}, {"service_icon": 0, "_id": 0})
-        #         return json.dumps({"status": "success", "data": to_ret})
-        #     except BaseException as e:
-        #         return json.dumps({"status": "failed", "error": str(e)})
-
-        # @self.route("/get_blog_posts", methods=["GET"])
-        # def getBlogPosts():
-        #     # returns blog post list with only description, title and publish date for preview only.
-        #     data_ = request.args
-        #     col_ = self.mongodb.get_collection(self.blog_collection_name)
-        #     resp_ = col_.find({}, {"html_content": False, "additional_fonts": False}).skip(int(data_["from"])).limit(int(data_["to"]))
-        #     to_ret = []
-        #     for item in resp_:
-        #         item["_id"] = str(item["_id"])
-        #         to_ret.append(item)
-        #     return json.dumps({"posts": to_ret, "total_posts": col_.count_documents({})})
-
-        @self.route("/get_blog_post", methods=["POST"])
-        def getBlogPost():
-            # return any particular blog with given blog id.
-            try:
-                data_ = json.loads(request.data.decode())
-                col_ = self.mongodb.get_collection(self.blog_collection_name)
-                to_ret = col_.find_one({"_id": ObjectId(data_["blog_id"])}, {"_id": False, "description": False})
-                return {"status": "success", "blog_data": to_ret}
-            except BaseException as e:
-                return {"status": "error", "error": str(e)}
-
-        @self.route("/post_interactions", methods=["POST"])
-        def saveBlogPostInteraction():
-            data_ = request.json
-            col_ = self.mongodb.get_collection(self.post_interactions_collection_name)
-            try:
-                to_add = {
-                    "post_id": data_["post_id"],
-                    "user_id": data_["user_id"],
-                    "type": PostTypes(data_["type"]).value,
-                    "action": PostActions(data_["action"]).value,
-                    "comment": data_["comment"]
-                }
-                col_.insert_one(to_add)
-            except BaseException as e:
-                return {"status": "failed", "error": str(e)}
-
-            return {"status": "success"}
-
     def setup_login_ep(self):
         @self.route("/check_admin_verification", methods=["POST"])
         def check_admin_verification():
@@ -445,7 +383,6 @@ class WebSvr(Flask):
 
 web_svr = WebSvr()
 web_svr.setup_protected_endpoints()
-web_svr.setup_public_endpoints()
 web_svr.setup_login_ep()
 
 @web_svr.route("/")

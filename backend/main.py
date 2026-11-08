@@ -351,27 +351,27 @@ class WebSvr(Flask):
         #         to_ret.append(item)
         #     return json.dumps({"services": to_ret})
 
-        @self.route("/get_service_by_id", methods=["POST"])
-        def get_service_by_id():
-            try:
-                data_ = json.loads(request.data.decode())
-                services_coll = self.mongodb.get_collection(self.services_collection_name)
-                to_ret = services_coll.find_one({"_id": bson.ObjectId(data_["_id"])}, {"service_icon": 0, "_id": 0})
-                return json.dumps({"status": "success", "data": to_ret})
-            except BaseException as e:
-                return json.dumps({"status": "failed", "error": str(e)})
+        # @self.route("/get_service_by_id", methods=["POST"])
+        # def get_service_by_id():
+        #     try:
+        #         data_ = json.loads(request.data.decode())
+        #         services_coll = self.mongodb.get_collection(self.services_collection_name)
+        #         to_ret = services_coll.find_one({"_id": bson.ObjectId(data_["_id"])}, {"service_icon": 0, "_id": 0})
+        #         return json.dumps({"status": "success", "data": to_ret})
+        #     except BaseException as e:
+        #         return json.dumps({"status": "failed", "error": str(e)})
 
-        @self.route("/get_blog_posts", methods=["GET"])
-        def getBlogPosts():
-            # returns blog post list with only description, title and publish date for preview only.
-            data_ = request.args
-            col_ = self.mongodb.get_collection(self.blog_collection_name)
-            resp_ = col_.find({}, {"html_content": False, "additional_fonts": False}).skip(int(data_["from"])).limit(int(data_["to"]))
-            to_ret = []
-            for item in resp_:
-                item["_id"] = str(item["_id"])
-                to_ret.append(item)
-            return json.dumps({"posts": to_ret, "total_posts": col_.count_documents({})})
+        # @self.route("/get_blog_posts", methods=["GET"])
+        # def getBlogPosts():
+        #     # returns blog post list with only description, title and publish date for preview only.
+        #     data_ = request.args
+        #     col_ = self.mongodb.get_collection(self.blog_collection_name)
+        #     resp_ = col_.find({}, {"html_content": False, "additional_fonts": False}).skip(int(data_["from"])).limit(int(data_["to"]))
+        #     to_ret = []
+        #     for item in resp_:
+        #         item["_id"] = str(item["_id"])
+        #         to_ret.append(item)
+        #     return json.dumps({"posts": to_ret, "total_posts": col_.count_documents({})})
 
         @self.route("/get_blog_post", methods=["POST"])
         def getBlogPost():

@@ -20,6 +20,19 @@
     gap: 20px;
 }
 
+.load-more {
+    text-align: center;
+    cursor: pointer;
+    color: cyan;
+    font-size: 1.4rem;
+    font-family: "Roboto Slab", serif;
+    text-decoration: underline;
+    opacity: 0.9;
+    &:hover{
+        opacity: 1;
+    }
+}
+
 @media screen and (max-width: 600px) {
     .blog_content {
         grid-template-columns: auto;

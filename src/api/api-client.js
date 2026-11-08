@@ -77,6 +77,16 @@ const apiClient = {
         let http_resp = await fetch(this.baseUrl+`/services/${service_id}`, {method: "GET", headers: this.getCommonHeaders()});
         return {...(await http_resp.json()), status: http_resp.statusText}
     },
+
+    async getBlogs(page_no) {
+        let http_resp = await fetch(this.baseUrl+`/blogs?page=${page_no}`, {method: "GET", headers: this.getCommonHeaders()});
+        return {...(await http_resp.json()), status: http_resp.statusText}
+    },
+
+    async getFullBlogById(blog_id) {
+        let http_resp = await fetch(this.baseUrl+`/blogs/full/${blog_id}`, {method: "GET", headers: this.getCommonHeaders()});
+        return {...(await http_resp.json()), status: http_resp.statusText}
+    },
 }
 
 export default apiClient;

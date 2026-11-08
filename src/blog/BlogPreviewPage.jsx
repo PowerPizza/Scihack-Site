@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './blogPreviewPage.css'
 import { Check, PageLeft, ShareAndroidSolid } from 'iconoir-react'
 import LoadingCircle from '../loading_circle/LoadingCircle';
 import { Link } from 'react-router-dom';
+import apiClient from '../api/api-client';
 
 export default function BlogPreviewPage(props) {
   const blog_id = useRef(new URLSearchParams(window.location.search).get("blog_id"));
@@ -31,14 +32,16 @@ export default function BlogPreviewPage(props) {
     const get_blog = async () => {
       if (!blog_id.current) return;
       setLoadingBarProgress.current(30);
-      let http_resp = await fetch("/get_blog_post", { method: "POST", body: JSON.stringify({ "blog_id": blog_id.current }) });
-      http_resp = JSON.parse(await http_resp.text());
+      const blog_resp = await apiClient.getFullBlogById(blog_id.current);
       setLoadingBarProgress.current(70);
-      if (http_resp["status"] === "success") {
-        setBlogData(http_resp["blog_data"]);
-        if (http_resp["blog_data"]["additional_fonts"].length) {
+      if (blog_resp.status === "OK") {
+        delete blog_resp.status;
+        blog_resp.additional_fonts = blog_resp.additional_fonts.split(',').filter(f => f?.trim()?.length);
+        setBlogData(blog_resp);
+
+        if (blog_resp.additional_fonts.length) {
           let url_ = "https://fonts.googleapis.com/css?family=";
-          http_resp["blog_data"]["additional_fonts"].forEach(family_name => {
+          blog_resp.additional_fonts.forEach(family_name => {
             url_ += family_name + "|"
           });
 
@@ -54,7 +57,7 @@ export default function BlogPreviewPage(props) {
         }
       }
       else {
-        setBlogError(http_resp);
+        setBlogError(blog_resp.error);
       }
       setLoadingBarProgress.current(100);
     }

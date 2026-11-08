@@ -1,38 +1,45 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import "./blogPage.css"
 import BlogCard from './BlogCard'
 import LoadingCircle from '../loading_circle/LoadingCircle';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import apiClient from '../api/api-client';
+// import InfiniteScroll from 'react-infinite-scroll-component';
+// TODO: Setup infinite scroll
 
 export default function BlogPage(props) {
-  const post_per_page = 10;
   const [blogsToShow, setBlogsToShow] = useState([]);
-  const blogsToShowRef = useRef([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [lastPage, setLastPage] = useState(0);
-  const [isDataFinished, setIsDataFinished] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [pageNo, setPageNo] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const setLoadingBarProgress = useRef(null);
   
-  const onBlogInteracted = async (interaction, data)=>{
-    let data_to_send = ["like", "dislike"].includes(interaction) ? {"action": interaction} : {"comment": data}; 
-    console.log(props.loginCreds);
-    // let http_resp = await fetch("/post_interactions", {method: "POST", body: JSON.stringify(data_to_send), headers: {"Content-Type": "application/json"}});
-    // console.log(await http_resp.text())
-  }
+  const fetchBlogsData = async (page_no)=>{
+    const blogs_resp = await apiClient.getBlogs(page_no);
+    if (blogs_resp.status !== 'OK') {
+      // handle error
+    }
+    else {
+      const new_posts = blogs_resp.blogs.map((blog)=>{
+        return <BlogCard
+                  title={blog.title}
+                  publish_date={blog.publish_date}
+                  content={blog.description.trim()}
+                  blog_id={blog.id}
+                  key={`${blog.id}-blog_card_asa`}
+                  on_interact={(x)=>{console.log(x)}} />
+      });
+      return {renderables: new_posts, total_pages: blogs_resp.page.total};
+    }
+  };
 
-  const fetchNext = useCallback(async ()=>{
-    const req_param = {from: post_per_page*lastPage, to: (post_per_page*lastPage)+post_per_page};
-    let http_resp = await fetch(`/get_blog_posts?${(new URLSearchParams(req_param)).toString()}`, {method: "GET"});  // to: lastPage*(post_per_page+1) is fine.
-    http_resp = await http_resp.json();
-    const new_posts = http_resp["posts"].map((ele_, idx_)=>{
-      return <BlogCard title={ele_["title"]} publish_date={ele_["publish_date"]} content={ele_["description"].trim()} blog_id={ele_["_id"]} key={"blog_card_asa"+idx_} on_interact={(x)=>{console.log(x)}} />
+  const onNextPage = () => {
+    setIsLoading(true);
+    fetchBlogsData(pageNo + 1).then(({renderables})=>{
+      setBlogsToShow(prev => [...prev, ...renderables]);
+      setIsLoading(false);
+      setPageNo(prev => prev + 1);
     });
-    return new_posts;
-  }, [lastPage]);
-
-  useEffect(()=>{
-    blogsToShowRef.current = [...blogsToShowRef.current, ...blogsToShow];
-  }, [blogsToShow]);
+  }
 
   useEffect(()=>{
     if (!setLoadingBarProgress.current) {
@@ -44,12 +51,13 @@ export default function BlogPage(props) {
     document.getElementsByClassName("content_and_footer")[0].scrollTo(0, 0);
   }, []);
 
-
   useEffect(()=>{
-    fetchNext().then((items) => {
-      setBlogsToShow(items);
+    fetchBlogsData(1).then(({renderables, total_pages}) => {
+      setBlogsToShow(renderables);
+      setIsLoading(false);
+      setTotalPages(total_pages);
     });
-  }, [fetchNext]);
+  }, []);
 
   return (
     <div className='blog_page_body'>
@@ -58,15 +66,21 @@ export default function BlogPage(props) {
           <span className='front'>Blog</span>
         </div>
         <hr style={{width: "100%", border: "1px solid gray", opacity: "0.3"}}/>
-          <div className='blog_content' id='blog-content'>
-            {isLoading ? 
-            <span style={{marginLeft: "auto", marginRight: "auto"}}>
-              <LoadingCircle width={30} height={30} />
-            </span>
-            :
-            blogsToShowRef.current
-            }
-          </div>
+        <div className='blog_content' id='blog-content'>
+          {blogsToShow}
+        </div>
+        {isLoading ? 
+          <span style={{marginLeft: "auto", marginRight: "auto"}}>
+            <LoadingCircle width={30} height={30} />
+          </span>
+          :
+          (totalPages !== pageNo) ? 
+            <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+              <span>({pageNo}/{totalPages})</span>
+              <span className='load-more' onClick={onNextPage}>More...</span>
+            </div>
+            : null
+        }
     </div>
   )
 }

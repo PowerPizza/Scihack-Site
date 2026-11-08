@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import "./blogCard.css"
 import { Check, ShareAndroidSolid, ThumbsDown, ThumbsUp } from 'iconoir-react'
 import { Link } from 'react-router-dom';

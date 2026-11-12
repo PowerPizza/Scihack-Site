@@ -1,5 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
+from database.models.post_interactions_model import PostActions
 
 class ProjectAssetResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -40,6 +41,10 @@ class ProjectResponse(BaseModel):
     updated_at: datetime
     assets: list["ProjectAssetResponse"]
     links: list["ProjectLinkResponse"]
+
+    # Only set for current logged-in user.
+    user_interaction: PostActions | None = None
+    user_comment: str | None = None
 
     @staticmethod
     def from_model(model):

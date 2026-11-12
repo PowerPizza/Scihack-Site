@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import './projectCard.css'
-import { MediaImageXmark, ThumbsDown, ThumbsUp } from 'iconoir-react'
+import { FastArrowDown, FastArrowUp, MediaImageXmark } from 'iconoir-react'
 import { Link } from 'react-router-dom'
 
 export default class ProjectCard extends Component {
@@ -24,14 +24,28 @@ export default class ProjectCard extends Component {
               <span className='project_desc'>{(p_desc ?? "").slice(0, 312)}...</span>
             </div>
             <div className='social_info'>
-                <span>
+                {(p_likes - p_dislikes) !== 0 ? 
+                  <span className='vote-tag'>
+                    {/* vote is determined by if (like - dislike) > 0 so +ve otherwise -ve */}
+                    {`${Math.abs(p_likes - p_dislikes)}`}
+                    {
+                      (p_likes - p_dislikes) > 0 ?
+                        <FastArrowUp width={20} height={20} color='lime' strokeWidth={3} />
+                        :
+                        <FastArrowDown width={20} height={20} color='red' strokeWidth={3} />
+                    }
+                  </span>
+                  :
+                  null} 
+                
+                {/* <span>
                 <ThumbsUp width={25} height={25} className='lkds_btn' color='#00def9' />
                 </span>
                 <span style={{fontSize: "1rem", color: '#00def9'}}>{p_likes}</span>
                 <span>
                 <ThumbsDown width={25} height={25} className='lkds_btn' color='#00def9' />
                 </span>
-                <span style={{fontSize: "1rem", color: '#00def9'}}>{p_dislikes}</span>
+                <span style={{fontSize: "1rem", color: '#00def9'}}>{p_dislikes}</span> */}
               <Link to={`/project_view?pid=${project_id}`} style={{marginLeft: "auto"}}>
                 <button className='more_btn'>Details...</button>
               </Link>

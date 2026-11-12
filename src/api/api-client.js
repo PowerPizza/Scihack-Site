@@ -2,10 +2,15 @@ const apiClient = {
     jwt: localStorage.getItem("token") || null,
     baseUrl: "/api/v1",
     getCommonHeaders() {
-        return {
-            "Authorization": this.jwt ? `Bearer ${this.jwt}` : null,
-            "Content-Type": "application/json"
-        };
+        const headers = {"Content-Type": "application/json"}
+        if (this.jwt) {
+            const payload = JSON.parse(atob(this.jwt.split('.')[1]));
+            const expired = payload.exp * 1000 <= Date.now();
+            if (!expired) {
+                headers["Authorization"] = `Bearer ${this.jwt}`
+            }
+        }
+        return headers
     },
 
     async getLoginCredentials() {
@@ -86,6 +91,20 @@ const apiClient = {
     async getFullBlogById(blog_id) {
         let http_resp = await fetch(this.baseUrl+`/blogs/full/${blog_id}`, {method: "GET", headers: this.getCommonHeaders()});
         return {...(await http_resp.json()), status: http_resp.statusText}
+    },
+
+    async likeOrDislikePost(post_id, module, action) {
+        const interaction_data = {
+            post_id,
+            action: action ?? 'none',
+            type: module,
+        }
+        let http_resp = await fetch(this.baseUrl+`/post_interaction/like_dislike`, {method: "POST", body: JSON.stringify(interaction_data), headers: this.getCommonHeaders()});
+        return {...(await http_resp.json()), status: http_resp.statusText}
+    },
+
+    async commentOnPost(post_id, module, comment) {
+        console.log(post_id, module, comment);
     },
 }
 

@@ -1,0 +1,37 @@
+https://i.ytimg.com/vi/KT1twPyNp34/maxresdefault.jpg  <-- skills page layout
+
+-- CONTACT US
+Name
+Date of birth
+Gmail
+Phone no. (optional)
+Subject
+Message
+-----> VERIFY GMAIL BEFORE REGISTER CONTACT
+----> VERIFICATION DONE ---> SEND REQUEST TO ADMIN
+
+font-family: "Bokor", system-ui;
+font-family: "Roboto Slab", serif;
+
+---> IF USING JSON FILE
+project.json
+{
+	"pid_p1": {
+		"title": "P1",
+		"desc": "DESCRIPTION HERE...",
+		"images": "link1 link2 link3",
+		"videos": "link1 link2 link3",
+		"links": [{text: "download", link: "github.com"}]
+		"likes": 0,
+		"dislikes": 0
+	}
+}
+
+
+** IF SERVER CRASHES ON DEPLOY AND UPLOADING PROJECT THEN CHANGE METHOD OF UPLOADING.
+** ADD PROPER MESSGAGE BOXES TO CONSOLE LOGS
+** ERROR CONTROL
+** ADMIN PAGE/UPLOAD POST/CLEAR THE FORM AFTER ONE POST UPLOADED.
+
+code for scroll back to top :-
+document.getElementsByClassName("content_and_footer")[0].scrollTo(0, 0);

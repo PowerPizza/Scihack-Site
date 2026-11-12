@@ -83,6 +83,20 @@
     border-radius: 5px;
     padding: 5px;
 }
+.project_card .card_in .info_area .social_info .vote-tag {
+    background-color: #041a1b;
+    border: 1px solid rgb(0, 112, 112);
+    border-radius: 16px;
+    padding-left: 8px;
+    padding-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    gap: 6px;
+}
 .project_card .card_in .info_area .social_info .lkds_btn{
     margin-left: 5px;
     margin-top: auto;

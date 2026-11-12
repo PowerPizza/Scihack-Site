@@ -5,6 +5,7 @@ import LinkElement from './LinkElement'
 import { Link, Navigate } from 'react-router-dom'
 import LoadingCircle from '../loading_circle/LoadingCircle'
 import apiClient from '../api/api-client'
+import PostInteraction from '../components/utils/PostInteraction'
 
 export default class ProjectView extends Component {
   constructor() {
@@ -157,6 +158,12 @@ export default class ProjectView extends Component {
             })
           }
         </div>
+        <PostInteraction
+          post_id={this.state.project_metadata.id}
+          module={'project'}
+          likes={this.state.project_metadata.likes}
+          dislikes={this.state.project_metadata.dislikes}
+          current_interaction={this.state.project_metadata.user_interaction} />
       </div>
     )
   }

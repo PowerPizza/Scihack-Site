@@ -37,6 +37,7 @@ from routes.accounts_route import api as accounts_api
 from routes.projects_route import api as projects_api
 from routes.services_route import api as services_api
 from routes.blogs_route import api as blogs_api
+from routes.post_interactions_route import api as post_interation_api
 
 from sqlalchemy.orm import Session
 
@@ -125,7 +126,7 @@ class WebSvr(Flask):
         self.register_blueprint(projects_api)
         self.register_blueprint(services_api)
         self.register_blueprint(blogs_api)
-
+        self.register_blueprint(post_interation_api)
 
     def _create_db_session(self):
         g.db = get_db()
@@ -399,9 +400,10 @@ web_svr.setup_login_ep()
 @web_svr.route("/login")
 @web_svr.route("/blog")
 @web_svr.route("/blog_preview")
-@web_svr.errorhandler(404)
 def home(*args):
     return render_template("index.html")
+
+# @web_svr.errorhandler(404)
 
 if __name__ == "__main__":
     web_svr.run(host="0.0.0.0", port=8080)

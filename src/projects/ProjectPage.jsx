@@ -34,7 +34,7 @@ export default class ProjectPage extends Component {
     }
 
     let project_cards = {"starred": []};
-    project_resp.projects.forEach((project, idx) => {
+    project_resp.projects?.forEach((project, idx) => {
       let renderable = <ProjectCard
                           p_thumbnail={project?.thumbnail_id}
                           p_title={project?.title}
@@ -71,8 +71,6 @@ export default class ProjectPage extends Component {
     else {
       grid_layout_cols = "repeat(4, 1fr)"
     }
-
-    console.log(this.props.loaded_projects);
 
     return (
       <div className='projects_main_body'>

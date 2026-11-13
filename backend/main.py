@@ -5,7 +5,7 @@ import bson.errors
 import requests
 from bson import ObjectId
 from flask import Flask, render_template, request, json, session, g
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from pymongo import MongoClient
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
@@ -342,24 +342,6 @@ class WebSvr(Flask):
                 return json.dumps({"status": "error", "error": str(e)})
 
     def setup_login_ep(self):
-        @self.route("/check_admin_verification", methods=["POST"])
-        def check_admin_verification():
-            if session.get("admin_uname") == os.getenv("ADMIN_USERNAME") and session.get("admin_pass") == os.getenv("ADMIN_PASSWORD") and session.get("admin_key") == os.getenv("ADMIN_KEY"):
-                return "LOGIN_SUCCESS"
-            else:
-                return "LOGIN_FAILED"
-
-        @self.route("/admin_verification", methods=["POST"])
-        def admin_verification():
-            data_ = json.loads(request.data.decode())
-            if data_["uname"] == os.getenv("ADMIN_USERNAME") and data_["password"] == os.getenv("ADMIN_PASSWORD") and data_["key"] == os.getenv("ADMIN_KEY"):
-                session["admin_uname"] = data_["uname"]
-                session["admin_pass"] = data_["password"]
-                session["admin_key"] = data_["key"]
-                return "LOGIN_SUCCESS"
-            else:
-                return "LOGIN_FAILED"
-
         @self.route("/login_with_google", methods=["POST"])
         def loginWithGoogle():
             try:

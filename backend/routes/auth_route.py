@@ -4,7 +4,7 @@ from sqlalchemy import select
 from database.models.users_model import Users, Role
 from typing import Optional
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from database.dto.user_response_dto import UserLiteResponse
+from database.dto.user_dto import UserLiteResponse
 
 api = Blueprint("auth_api", __name__, url_prefix="/api/v1")
 

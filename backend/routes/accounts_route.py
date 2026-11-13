@@ -4,7 +4,7 @@ from sqlalchemy import select
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from database.models.users_model import Users
 from typing import Optional
-from database.dto.user_response_dto import UserFullResponse
+from database.dto.user_dto import UserFullResponse
 
 api = Blueprint("accounts_api", __name__, url_prefix="/api/v1")
 

@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import './adminPage.css'
 import { KeyframePlusIn, SendDiagonal, Settings, UploadSquare } from 'iconoir-react'
 import UploadProjectForm from './UploadProjectForm'
-import AdminLoginPanel from './AdminLoginPanel';
 import ConfigProjectPage from './ConfigProjectPage';
 import PromptYesNo from '../prompt_box/PromptYesNo';
 import AddServicePage from './AddServicePage';
@@ -10,11 +9,13 @@ import ManageServices from './ManageServices';
 import AddSkillPage from './AddSkillPage';
 import BlogEditorPage from './BlogEditorPage';
 import ManageBlogPage from './ManageBlogPage';
+import apiClient from '../api/api-client';
+import { Navigate } from 'react-router-dom';
 
 export default class AdminPage extends Component {
     constructor() {
         super();
-        this.state = { win_to_show: null, logged_in: false, ys_no_prompt: null }
+        this.state = { win_to_show: null, logged_in: false, ys_no_prompt: null, checking_creds: true }
     }
 
     openUploadProjectPage = () => {
@@ -60,10 +61,29 @@ export default class AdminPage extends Component {
         this.setState({ ys_no_prompt: null })
     }
 
+    async componentDidMount() {
+        const current_user = await apiClient.getLoginCredentials();
+        if (current_user.status === "OK" && current_user.role === "admin") {
+            this.setState({logged_in: true});
+        }
+        else {
+            this.setState({logged_in: false});
+        }
+        this.setState({checking_creds: false});
+    }
+
     render() {
-        if (!this.state.logged_in) {
+        if (this.state.checking_creds) {
             return (
-                <AdminLoginPanel setLoginStatus={this.setLoginStatus} createMessageBox={this.props.createMessageBox} />
+                <div className='checking-creds-body'>
+                    <h3 style={{textAlign: 'center'}}>Checking Credentials...</h3>
+                </div>
+            )
+        }
+
+        else if (!this.state.logged_in) {
+            return (
+                <Navigate to={"/"} />
             )
         }
 

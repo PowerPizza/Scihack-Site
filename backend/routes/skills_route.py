@@ -2,7 +2,7 @@ from flask import Blueprint, g, jsonify
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from database.models.skills_model import Skills
-from database.dto.skill_response_dto import SkillResponseDto
+from database.dto.skill_dto import SkillResponseDto
 
 api = Blueprint("skills_api", __name__, url_prefix="/api/v1")
 

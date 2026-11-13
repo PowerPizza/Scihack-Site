@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.orm import Session
 from sqlalchemy import select, and_, func
 from database.models.projects_model import Projects
-from database.dto.project_response_dto import ProjectResponse
+from database.dto.project_dto import ProjectResponse
 from database.models.post_interactions_model import PostInteractions, PostActions
 
 api = Blueprint("projects_api", __name__, url_prefix="/api/v1")

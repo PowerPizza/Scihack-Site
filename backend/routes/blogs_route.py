@@ -2,7 +2,7 @@ from flask import Blueprint, g, request
 from sqlalchemy.orm import Session
 from sqlalchemy import select, func
 from database.models.blogs_model import Blogs
-from database.dto.blogs_response_dto import BlogLiteResponse, BlogResponse
+from database.dto.blogs_dto import BlogLiteResponse, BlogResponse
 import logging
 
 logger = logging.getLogger(__name__)

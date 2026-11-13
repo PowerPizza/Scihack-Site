@@ -140,7 +140,7 @@ export default class App extends Component {
           <div className='content_and_footer'>
             <Routes>
               <Route path='*' element={<NotFoundPage />} />
-              <Route path='/' element={<HomePage device_width={this.state.device_width} />} />
+              <Route path='/' element={<HomePage device_width={this.state.device_width} login_creds={this.state.login_creds} />} />
               <Route path='/skills' element={<SkillsPage device_width={this.state.device_width} setLoadingBarProgress={this.setLoadingBarProgress} />} />
               <Route path='/projects' element={<ProjectPage device_width={this.state.device_width} saveLoadedProjects={this.saveLoadedProjects} loaded_projects={this.state.loaded_projects} setLoadingBarProgress={this.setLoadingBarProgress} />} />
               <Route path='/experience' element={<ExperiencePage />} />

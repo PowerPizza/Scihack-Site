@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import './homePage.css'
 import {Github, Instagram, Linkedin, X, Youtube} from 'iconoir-react'
 import { Link } from 'react-router-dom';
@@ -9,9 +9,15 @@ export default class HomePage extends Component {
   }
   
   render() {
-    let {device_width} = this.props;
+    let {device_width, login_creds} = this.props;
     return (
       <div className='home_main_body' style={device_width < 550 ? {flexDirection: "column"} : {minHeight: "100%", maxHeight: "fit-content"}}>
+        {login_creds?.role === 'admin' ? 
+        <Link to={'/administrator'} className='admin-panel-icon'>
+          <div className='admin-panel-nav'></div>
+        </Link>
+        :
+        null}
         <div className='pfp_image' style={{marginTop: device_width < 500 ? "20px" : ""}}></div>
         <div className='other_info' style={device_width < 550 ? {marginLeft: "auto", marginRight: "auto"} : {}}>
             <h1 style={{margin: "0px", fontSize: "2.4rem"}}>Hi, It's <span className='color_aqua'>Scihack</span></h1>

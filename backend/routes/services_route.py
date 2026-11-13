@@ -2,7 +2,7 @@ from flask import Blueprint, g
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from database.models.services_model import Services
-from database.dto.service_response_dto import ServiceResponse
+from database.dto.service_dto import ServiceResponse
 
 api = Blueprint("services_api", __name__, url_prefix="/api/v1")
 
